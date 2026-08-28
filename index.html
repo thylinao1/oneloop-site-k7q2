@@ -463,6 +463,14 @@ svg rect:not([fill]):not([class]){fill:var(--card)}
 /* 90: the disposition flow breathes */
 svg[aria-label^="Disposition"]{display:block;max-width:1040px;margin:0 auto}
 
+/* architecture diagrams build layer by layer (boxes cascade, arrows follow) */
+.arch-svg .ar{opacity:0;transform:translateY(10px);transform-box:fill-box;
+  transition:opacity .5s var(--ease) var(--fd,0ms),transform .5s var(--ease) var(--fd,0ms)}
+svg.arch-fired .ar{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.arch-svg .ar{opacity:1;transform:none;transition:none}}
+/* 112: the disposition flow gets room */
+svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2em auto}
+
 /* the atlas: dots sweep in as a wave, then the field breathes */
 #atlas-exhibit svg,.atlas-svg{
   -webkit-mask-image:linear-gradient(100deg,#000 60%,transparent 75%);
@@ -474,6 +482,14 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
 @keyframes atlas-sweep{from{-webkit-mask-position:100% 0;mask-position:100% 0;opacity:.15}
   to{-webkit-mask-position:0% 0;mask-position:0% 0;opacity:1}}
 @keyframes atlas-breathe{from{transform:scale(1)}to{transform:scale(1.014)}}
+#atlas-exhibit svg circle.ad{transform-box:fill-box;transform-origin:center;
+  transition:opacity .55s var(--ease) var(--ad,0ms),transform .55s var(--ease) var(--ad,0ms)}
+#atlas-exhibit svg.atlas-hold circle.ad{opacity:0;transform:scale(.25)}
+#atlas-exhibit svg circle.tw{animation:dot-tw 3.2s ease-in-out infinite alternate;animation-delay:var(--ad,0ms)}
+@keyframes dot-tw{from{transform:scale(1)}to{transform:scale(1.4)}}
+@media (prefers-reduced-motion:reduce){
+  #atlas-exhibit svg.atlas-hold circle.ad{opacity:1;transform:none}
+  #atlas-exhibit svg circle.tw{animation:none}}
 @media (prefers-reduced-motion:reduce){#atlas-exhibit svg,.atlas-svg{opacity:1;-webkit-mask-image:none;mask-image:none}
   svg.atlas-in{animation:none}}
 
@@ -4161,16 +4177,60 @@ prog();
   window.olTableReplay=function(scope){ bodies(scope).forEach(function(tb){ parkT(tb); fireT(tb); }); };
 })();
 
+/* architecture svgs cascade their layers on every visit */
+(function(){
+  if(reduce) return;
+  [].slice.call(doc.querySelectorAll("svg.arch-svg")).forEach(function(svg){
+    var kids=[].slice.call(svg.children).filter(function(el){
+      return !/defs|title|marker|style/i.test(el.tagName); });
+    var items=[];
+    kids.forEach(function(el){ try{ var bb=el.getBBox();
+      items.push({el:el, y:bb.y, x:bb.x}); }catch(e){} });
+    if(items.length<3) return;
+    items.sort(function(a,b){ return (a.y-b.y)||(a.x-b.x); });
+    var lastY=null, bi=-1;
+    items.forEach(function(o){
+      if(lastY===null||Math.abs(o.y-lastY)>28){ bi++; lastY=o.y; }
+      o.el.classList.add("ar");
+      o.el.style.setProperty("--fd",(bi*160+((o.x/900)*120|0))+"ms");
+    });
+    var io=new IntersectionObserver(function(es){ es.forEach(function(en){
+      if(en.isIntersecting && !svg._on){ svg._on=true;
+        svg.classList.remove("arch-fired"); void svg.getBoundingClientRect();
+        requestAnimationFrame(function(){ svg.classList.add("arch-fired"); }); }
+      else if(!en.isIntersecting && svg._on){ svg._on=false; svg.classList.remove("arch-fired"); }
+    });},{rootMargin:"0px 0px -10% 0px",threshold:[0,.08]});
+    io.observe(svg);
+  });
+})();
+
 /* the atlas dots sweep in and the field breathes, re-armed on every visit */
 (function(){
   if(reduce) return;
   var a=doc.querySelector("#atlas-exhibit svg");
   if(!a) return;
+  /* per-dot staggered pop from the field's center, plus a sparse twinkle layer */
+  var dots=[].slice.call(a.querySelectorAll("circle")).filter(function(c){
+    return !/hover-target|ol-hit/.test(c.getAttribute("class")||""); });
+  if(dots.length){
+    var vb=(a.getAttribute("viewBox")||"0 0 640 400").split(/\s+/).map(Number);
+    var cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2, maxd=Math.hypot(vb[2]/2,vb[3]/2)||1;
+    dots.forEach(function(c,i){
+      var dx=(+c.getAttribute("cx")||cx)-cx, dy=(+c.getAttribute("cy")||cy)-cy;
+      var d=Math.hypot(dx,dy)/maxd;
+      c.classList.add("ad");
+      c.style.setProperty("--ad", Math.round(d*1100+((i*37)%140))+"ms");
+      if(i%37===0){ c.classList.add("tw"); }
+    });
+    a.classList.add("atlas-hold");
+  }
   var io=new IntersectionObserver(function(es){ es.forEach(function(en){
     if(en.isIntersecting && !a._on){ a._on=true;
-      a.classList.remove("atlas-in"); void a.getBoundingClientRect();
-      requestAnimationFrame(function(){ a.classList.add("atlas-in"); }); }
-    else if(!en.isIntersecting && a._on){ a._on=false; a.classList.remove("atlas-in"); }
+      a.classList.remove("atlas-in"); a.classList.add("atlas-hold");
+      void a.getBoundingClientRect();
+      requestAnimationFrame(function(){ a.classList.add("atlas-in"); a.classList.remove("atlas-hold"); }); }
+    else if(!en.isIntersecting && a._on){ a._on=false;
+      a.classList.remove("atlas-in"); a.classList.add("atlas-hold"); }
   });},{rootMargin:"0px 0px -12% 0px",threshold:[0,.08]});
   io.observe(a);
 })();
