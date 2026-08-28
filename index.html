@@ -358,10 +358,13 @@ svg text{font-family:ui-sans-serif,system-ui,sans-serif;font-size:10.5px;fill:va
 .chart-svg circle[class*="dot-a"]{fill:var(--blue);stroke:none}
 .chart-svg circle[class*="dot-b"]{fill:var(--warm);stroke:none}
 .chart-svg circle[class*="dot-act"]{fill:var(--ink);stroke:none}
-.chart-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr));
-  gap:8px 20px;margin-top:16px;font-family:var(--f-m);font-size:11.5px;color:var(--ink-2);max-width:none}
-.legend-row{display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.legend-row *{display:inline}
+.chart-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));
+  gap:10px 22px;margin-top:16px;font-family:var(--f-m);font-size:11.5px;line-height:1.4;
+  color:var(--ink-2);max-width:none}
+/* labels wrap rather than truncate: eight of them were being cut off */
+.legend-row{display:flex;align-items:flex-start;gap:8px;white-space:normal;overflow:visible;min-width:0}
+.legend-row > *{min-width:0}
+.legend-swatch{flex:0 0 auto;margin-top:2px}
 .legend-swatch{width:12px;height:12px;border-radius:3px;background:var(--grey);display:inline-block}
 .legend-swatch--a{background:var(--blue)} .legend-swatch--b{background:var(--warm)}
 .legend-swatch--act{background:var(--ink)} .legend-swatch--ref{background:var(--grey)}
