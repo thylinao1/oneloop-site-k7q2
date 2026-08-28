@@ -1621,6 +1621,10 @@ html[data-ol-variant="condensed"] main .ol-mod > hr.hairline{display:none}
    the module's spacing so it reads as one more module rather than as loose blocks */
 html[data-ol-variant="condensed"] main .two-col{margin-top:var(--k-gap-out);gap:3rem}
 html[data-ol-variant="condensed"] main .two-col > div > :is(p,ul,ol){max-width:none}
+/* the closing pair (Limitations; Round 2) stacks in story order: two columns of very
+   unequal length left a dead right column at the page's final impression */
+html[data-ol-variant="condensed"] #s8 .two-col{grid-template-columns:1fr;gap:2.4rem}
+html[data-ol-variant="condensed"] #s8 .two-col > div > :is(p,ul,ol){max-width:var(--measure)}
 /* The beat line under the title. It kept its own pair of hairlines, which is the bracketed
    floating sub-head the tour objected to; one rule under it is enough, and it now does real work,
    closing the module's header against its payload. */
@@ -1709,13 +1713,16 @@ html[data-ol-variant="condensed"] .verdict-list{grid-template-columns:1fr;gap:1.
    chips take a row of their own below it.
    ========================================================================= */
 html[data-ol-variant="condensed"] .ol-story-chapter{
-  display:grid;grid-template-columns:auto 1fr;justify-items:start;align-items:baseline;
-  gap:.55rem .9rem;margin:0 0 1.1rem;color:var(--on-navy-muted)}
+  display:flex;flex-wrap:wrap;align-items:baseline;
+  row-gap:.55rem;column-gap:.9rem;margin:0 0 1.1rem;color:var(--on-navy-muted)}
 html[data-ol-variant="condensed"] .ol-story-no{font-family:var(--font-display);font-size:1.35rem;color:var(--on-navy)}
-html[data-ol-variant="condensed"] .ol-story-title{font-family:var(--font-display);font-size:1.05rem;color:var(--on-navy)}
+/* the title grows to finish its line, so every chip wraps onto ONE shared row below
+   instead of stacking one per line (the fresh-eyes audit's finding on the s3 card) */
+html[data-ol-variant="condensed"] .ol-story-title{
+  font-family:var(--font-display);font-size:1.05rem;color:var(--on-navy);flex:1 0 auto}
 html[data-ol-variant="condensed"] .ol-story-crit,
-html[data-ol-variant="condensed"] .ol-story-theme{grid-column:1 / -1;margin-left:0;max-width:100%}
-html[data-ol-variant="condensed"] .ol-story-theme{gap:.45rem}
+html[data-ol-variant="condensed"] .ol-story-theme{margin-left:0;max-width:100%}
+html[data-ol-variant="condensed"] .ol-story-theme{display:inline-flex;flex-wrap:wrap;gap:.45rem}
 
 /* ============================================================================
    8. HERO TILES
