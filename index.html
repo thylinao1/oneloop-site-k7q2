@@ -43,6 +43,9 @@ a:hover{color:var(--navy)}
 :focus-visible{outline:2px solid var(--amber-b);outline-offset:3px;border-radius:2px}
 ::selection{background:var(--gold)}
 
+.only-print{display:none}
+[id]{scroll-margin-top:64px}
+
 /* atmosphere */
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.6}
 #grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
@@ -382,11 +385,50 @@ svg rect:not([fill]):not([class]){fill:var(--card)}
 .anim .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.anim .rv{opacity:1;transform:none;transition:none}
   #cover h1{animation:none}}
+/* reveal density: scene bars grow only once seen; chapter pieces cascade */
+.anim .rv:not(.in) .ol-scene-track::after{transform:scaleX(0)}
+.anim .rv:not(.in) :is(.ol-scene-int,.ol-scene-pt){opacity:0}
+:is(.ol-scene-int,.ol-scene-pt){transition:opacity .5s var(--ease) .15s}
+.anim .chapter .wrap > *{opacity:0;transform:translateY(14px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.anim .chapter.in .wrap > *{opacity:1;transform:none}
+.anim .chapter.in .wrap > :nth-child(2){transition-delay:.08s}
+.anim .chapter.in .wrap > :nth-child(3){transition-delay:.16s}
+.anim .chapter.in .wrap > :nth-child(4){transition-delay:.24s}
+.anim .chapter.in .wrap > :nth-child(n+5){transition-delay:.3s}
+@media (prefers-reduced-motion:reduce){.anim .chapter .wrap > *{opacity:1;transform:none;transition:none}}
+
 /* close */
 #close{background:var(--navy);color:var(--on-navy-2);margin-top:clamp(70px,10vh,120px);padding:64px 0 80px;font-size:15.5px}
 #close a{color:var(--gold)}
 #close .label{font-family:var(--f-m);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--on-navy-3)}
-@media print{#field,#grain,#rail,#toc,.pod,.dd{display:none !important}
+/* ---------- mobile ---------- */
+@media (max-width:960px){
+  :root{--read:100%}
+  .part > .wrap > *{max-width:none}
+  .ol-story-fig{padding:16px 18px}
+  .cover-panel .verdict-list{grid-template-columns:1fr}
+  #cover h1{max-width:14ch}
+}
+@media (max-width:640px){
+  body{font-size:17.5px}
+  .wrap{padding-inline:16px}
+  .chapter{padding:36px 0}
+  .ol-story-head{font-size:clamp(26px,7.4vw,34px)}
+  .ol-story-num{font-size:34px}
+  .ol-scene-row{grid-template-columns:1fr auto}
+  .ol-scene-label{grid-column:1 / -1;text-align:left}
+  .ol-scene-ci{grid-column:1 / -1}
+  .tiles{grid-template-columns:1fr}
+  dialog.dd-modal{max-width:100vw;max-height:100dvh;border-radius:0}
+  .dd-body{padding:20px 18px}
+  #cover .wave{opacity:.35}
+  .pod summary{padding:12px 16px;font-size:12.5px}
+}
+
+@media print{.only-print{display:block}
+  #field,#grain,#rail,#toc,.pod,.dd,.wave,.ol-glow{display:none !important}
+  .chapter::after{display:none}
   body{background:#fff}.chapter,.interlude .head,#cover,#close{background:#fff;color:#000}}
 </style>
 </head>
@@ -791,7 +833,7 @@ remove it. Status <span data-src="results/safety_control_plane.json#/status">DES
 <button type="button" class="ol-more ol-dd-btn" title="135 words" aria-haspopup="dialog">Deep dive: The control plane, checked not built</button>
 <div class="notrun"><p class="note-tag"><button type="button" class="ol-term" data-term="pre-registration" aria-haspopup="dialog">Pre-registered</button>, and not run</p><p><strong><span data-src="results/safety_membership.json#/designed_not_run/0/exhibit">SAFE-B1, unicity on the pretraining corpus</span></strong> did not run: <code>scripts/safety/unicity.py</code> was never written, so no result exists. What that costs, as a rule rather than a regret: <span data-src="results/safety_membership.json#/designed_not_run/0/what_this_costs_the_page">the de Montjoye reference stays a citation and never becomes a comparison. No claim about how many spatiotemporal points single out an account in this corpus may appear anywhere, in either direction.</span></p><p>Inside the injection red team, a narrower list, reasons in the file: <span data-src="results/safety_injection.json#/designed_not_run/1/probe">adaptive attack, meaning search or gradient guided payloads</span>; <span data-src="results/safety_injection.json#/designed_not_run/2/probe">injection into the merchant name field of a live partner bundle</span>; <span data-src="results/safety_injection.json#/designed_not_run/3/probe">a second served model as an independent auditor</span>.</p></div>
 
-</div></div><div class="rv"><h3>What these controls do not protect against, and what each obligation actually got</h3></div><div class="rv"><p class="ol-beat" data-ol-for="s4" data-ol-h3="whatthesecontrolsdonotprotectagainst,andwhateachobligationactuallygot" data-ol-n="0"><span class="ol-beat-lead">Every control bounds the loss, none prevents it; four threats dropped with reasons; obligation rows are built or designed, none a compliance claim.</span></p></div><button class="dd rv" data-dd="dd-s4">Read the full account of this chapter</button></div></div><section class="interlude" id="safety-card"><div class="head"><div class="wrap"><p class="kick">Interlude</p><p class="desc">Safety, measured · Protection theme. Privacy and safety priced one guard at a time, on the output a partner actually receives, with the failures printed beside the numbers.</p><h2>We measured the security section too</h2></div></div><div class="part"><div class="wrap">
+</div></div><div class="rv"><h3>What these controls do not protect against, and what each obligation actually got</h3></div><div class="rv"><p class="ol-beat" data-ol-for="s4" data-ol-h3="whatthesecontrolsdonotprotectagainst,andwhateachobligationactuallygot" data-ol-n="0"><span class="ol-beat-lead">Every control bounds the loss, none prevents it; four threats dropped with reasons; obligation rows are built or designed, none a compliance claim.</span></p></div><button class="dd rv" data-dd="dd-s4">Read the full account of this chapter</button></div></div><section class="interlude" id="safety-card"><div class="head"><div class="wrap"><p class="kick">Interlude · Safety, measured</p><p class="desc">Protection theme. Privacy and safety priced one guard at a time, on the output a partner actually receives, with the failures printed beside the numbers.</p><h2>We measured the security section too</h2></div></div><div class="part"><div class="wrap">
     <div class="wrap">
       
       
@@ -1358,7 +1400,7 @@ queue whichever way its interval falls.</caption>
 
 
 <p class="exhibit-provenance">seed <span data-src="results/narratives.json#/seed">42</span> · data labels: <span class="badge badge--label" data-src="results/narratives.json#/labels/0">genai-explanation-layer</span> <span class="badge badge--label" data-src="results/narratives.json#/labels/1">facts-from-committed-results</span> <span class="badge badge--label" data-src="results/narratives.json#/labels/2">explains-never-decides</span> · generated by <code>scripts/narratives/generate.py (check: scripts/narratives/check.py --check)</code> · python <span data-src="results/narratives.json#/versions/python">3.11.15</span> · torch <span data-src="results/narratives.json#/versions/torch">2.11.0+cu130</span> · transformers <span data-src="results/narratives.json#/versions/transformers">5.14.1</span> · vllm <span data-src="results/narratives.json#/versions/vllm">0.26.0</span></p>
-</div></div><button class="dd rv" data-dd="dd-s6">Read the full account of this chapter</button></div></div><section class="interlude" id="narratives-card"><div class="head"><div class="wrap"><p class="kick">Interlude</p><p class="desc">GenAI explanation layer · Technical depth. The gate is the contribution, not the prose it passes.</p><h2>The two-layer gate on generated text
+</div></div><button class="dd rv" data-dd="dd-s6">Read the full account of this chapter</button></div></div><section class="interlude" id="narratives-card"><div class="head"><div class="wrap"><p class="kick">Interlude · GenAI explanation layer</p><p class="desc">Technical depth. The gate is the contribution, not the prose it passes.</p><h2>The two-layer gate on generated text
         Real</h2></div></div><div class="part"><div class="wrap"><div class="ol-amb" aria-hidden="true"><i class="ol-amb-img" style="background-image: var(--ol-amb-s6); --ol-amb-dur: 34s; --ol-amb-delay: -3s;"></i><canvas class="ol-amb-dots"></canvas></div>
     <div class="wrap">
       
@@ -3523,6 +3565,39 @@ prog();
   addEventListener("load",sweep); setTimeout(sweep,2500);
 })();
 
+/* count-ups: tile figures and chapter numbers land on their exact printed string */
+(function(){
+  if(reduce) return;
+  var targets=[].slice.call(doc.querySelectorAll(".tile-figure, .ol-story-num"));
+  var io=new IntersectionObserver(function(es){ es.forEach(function(en){
+    if(!en.isIntersecting) return; io.unobserve(en.target);
+    var span=en.target.querySelector("[data-src],[data-derived]")||en.target;
+    var final=span.textContent;
+    var m=final.match(/^([^0-9]*)([0-9][0-9,]*(?:\.[0-9]+)?)(.*)$/s);
+    if(!m) return;
+    var pre=m[1], num=m[2], post=m[3];
+    var dec=(num.split(".")[1]||"").length, hasComma=num.indexOf(",")>=0;
+    var target=parseFloat(num.replace(/,/g,"")); if(!isFinite(target)) return;
+    var t0=null, DUR=1100;
+    function fmt(v){ var s=v.toFixed(dec);
+      if(hasComma){ var pp=s.split("."); pp[0]=pp[0].replace(/\B(?=(\d{3})+(?!\d))/g,","); s=pp.join("."); }
+      return s; }
+    function step(ts){ if(!t0)t0=ts; var p=Math.min(1,(ts-t0)/DUR); var e=1-Math.pow(1-p,3);
+      span.textContent=pre+fmt(target*e)+post;
+      if(p<1) requestAnimationFrame(step); else span.textContent=final; }
+    requestAnimationFrame(step);
+  });},{threshold:.4});
+  targets.forEach(function(t){io.observe(t);});
+})();
+
+/* chapter bands reveal their pieces with a stagger */
+(function(){
+  var io=new IntersectionObserver(function(es){ es.forEach(function(en){
+    if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+  });},{rootMargin:"0px 0px -18% 0px"});
+  [].slice.call(doc.querySelectorAll(".chapter,.interlude .head")).forEach(function(c){io.observe(c);});
+})();
+
 /* toc spy */
 (function(){
   var links=[].slice.call(doc.querySelectorAll("#toc a[href^='#']"));
@@ -3531,7 +3606,7 @@ prog();
   var io=new IntersectionObserver(function(es){ es.forEach(function(en){
     if(!en.isIntersecting) return;
     var a=map[en.target.id]; if(!a) return;
-    if(cur) cur.classList.remove("on"); cur=a; a.classList.add("on");
+    if(cur){ cur.classList.remove("on"); cur.removeAttribute("aria-current"); } cur=a; a.classList.add("on"); a.setAttribute("aria-current","true");
   });},{rootMargin:"-45% 0px -50% 0px"});
   Object.keys(map).forEach(function(id){var s=doc.getElementById(id); if(s) io.observe(s);});
 })();
@@ -3541,7 +3616,7 @@ prog();
   doc.addEventListener("click",function(e){
     var b=e.target.closest("[data-dd]");
     if(b){ var d=doc.getElementById(b.getAttribute("data-dd"));
-      if(d){ d.showModal(); var c=d.querySelector(".dd-close"); if(c)c.focus({preventScroll:true}); } return; }
+      if(d){ d._opener=b; d.showModal(); var c=d.querySelector(".dd-close"); if(c)c.focus({preventScroll:true}); } return; }
     var t=e.target.closest("button.ol-term");
     if(t){ var key=(t.getAttribute("data-term")||t.textContent||"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
       var ALIAS={"qini":"qini-coefficient","paired-interval":"confidence-interval"};
@@ -3556,6 +3631,11 @@ prog();
     if(d && e.target===d) d.close();
   });
 })();
+
+/* focus returns to the opener when any dialog closes */
+[].slice.call(doc.querySelectorAll("dialog.dd-modal")).forEach(function(d){
+  d.addEventListener("close",function(){ if(d._opener&&d._opener.focus){ d._opener.focus({preventScroll:true}); } });
+});
 
 /* scene option toggles + steppers */
 (function(){
