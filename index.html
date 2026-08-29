@@ -85,7 +85,8 @@ a:hover{color:var(--navy)}
 #cover .kick{font-family:var(--f-m);font-size:13px;letter-spacing:.08em;color:var(--on-navy-3);
   text-transform:uppercase;text-align:center;margin:0 0 26px}
 #cover h1{font-family:var(--f-d);font-weight:560;font-size:clamp(46px,6.6vw,88px);
-  line-height:1.06;letter-spacing:-.015em;text-align:center;margin:0 auto 34px;max-width:19ch;text-wrap:balance;
+  line-height:1.06;letter-spacing:-.015em;text-align:center;margin:0 auto 22px;max-width:19ch;text-wrap:balance;
+  padding-bottom:.14em;
   background:linear-gradient(100deg,#f7f3ea 0%,#fff 22%,#efd9a8 46%,#f2e2b8 54%,#fff 78%,#f7f3ea 100%);
   background-size:280% 100%;-webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;animation:sweep 17s cubic-bezier(.33,1,.68,1) infinite}
@@ -345,7 +346,8 @@ tr.ol-m-row :is(td,th):last-child{border-right:2px solid var(--amber-b);border-r
 .ol-zero::before{content:"";position:absolute;top:-6px;bottom:-6px;width:1px;background:var(--rule-strong);
   left:calc(var(--x0,.5)*100%)}
 .ol-opt{display:none}.ol-opt-on{display:grid;gap:14px}
-.ol-opt-cap{display:none;font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+.ol-scene-cap{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+.ol-opt-cap{display:none}
 .ol-opt-cap.ol-opt-on{display:block}
 .ol-scene-prov{font-family:var(--f-m);font-size:11px;color:var(--ink-3);margin-top:14px}
 /* notes & callouts */
@@ -400,7 +402,7 @@ dialog.dd-modal{border:0;border-radius:18px;padding:0;max-width:min(1020px,94vw)
   max-height:86vh;background:var(--card);color:var(--ink);box-shadow:0 40px 90px rgba(3,8,28,.5)}
 dialog.dd-modal::backdrop{background:rgba(6,13,43,.84);backdrop-filter:blur(4px)}
 .dd-head:focus,.dd-head:focus-visible{outline:none}
-.dlg-open #toc,.dlg-open #rail{opacity:0;pointer-events:none}
+.dlg-open #toc,.dlg-open #rail{opacity:0;visibility:hidden;pointer-events:none}
 #toc{transition:opacity .2s}
 .dd-head{position:sticky;top:0;z-index:6;background:var(--navy);color:var(--on-navy);padding:20px 56px 18px 28px}
 .dd-body{position:relative;z-index:1}
@@ -473,11 +475,20 @@ svg rect:not([fill]):not([class]){fill:var(--card)}
 .hit{outline:2px solid var(--amber-b);outline-offset:4px;border-radius:4px}
 
 /* the wave: the old cover's particle field, back as the cover's ground */
-#cover .wave{position:absolute;left:0;top:0;width:100%;height:64vh;object-fit:cover;object-position:left top;
+#cover .wave{position:absolute;left:-4%;top:5vh;width:120%;height:77vh;object-fit:cover;object-position:38% top;
   opacity:.62;pointer-events:none;filter:brightness(.82) saturate(1.1);
-  -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.8) 55%,transparent 100%);
-  mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.8) 55%,transparent 100%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 9%,rgba(0,0,0,.8) 55%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 9%,rgba(0,0,0,.8) 55%,transparent 100%);
 }
+/* a second wave runs the other way behind the self-assessment panel */
+.cover-panel--wave{position:relative;overflow:hidden}
+.cover-panel--wave > *{position:relative;z-index:1}
+.cover-panel--wave .wave2{position:absolute;inset:0;z-index:0;width:100%;height:100%;
+  object-fit:cover;object-position:60% 30%;opacity:.3;pointer-events:none;
+  transform:scaleX(-1);filter:brightness(.75) saturate(1.05);
+  -webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 30%,#000 70%,transparent 100%);
+  mask-image:linear-gradient(0deg,transparent 0%,#000 30%,#000 70%,transparent 100%)}
+@media (prefers-reduced-motion:reduce){.cover-panel--wave .wave2{display:none}}
 #cover .wrap{position:relative;z-index:2}
 #cover .halo{z-index:1}
 @media (prefers-reduced-motion:reduce){#cover .wave{display:none}}
@@ -863,7 +874,9 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
           classes, fixed and re-measured in Section 6.</p>
         <a class="tile-jump" href="#narratives-card">Step through the replay console, Section 6</a>
       </div></div>
-    <div class="cover-panel rv">
+    <div class="cover-panel cover-panel--wave rv">
+      <video class="wave2" autoplay muted loop playsinline preload="metadata"
+        src="assets/cover-wave.mp4" aria-hidden="true"></video>
       <p class="verdict-lede">Self-assessment of the evidence</p>
       <ul class="verdict-list verdict-list--score">
         
@@ -4604,7 +4617,7 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
     return svg;
   }
   function lineish(rows,kind){
-    var n=rows.length, h=270, top=36, bot=h-64, L=70, R=W-40;
+    var n=rows.length, stag=n>=4?30:0, h=270+stag, top=36, bot=h-64-stag, L=70, R=W-40;
     var vs=rows.map(function(r){return r.v;}), mn=Math.min(0,Math.min.apply(null,vs)), mx=Math.max.apply(null,vs); if(mx<=mn) mx=mn+1;
     var pad=(mx-mn)*.14; mn-= (mn<0?pad:0); mx+=pad;
     var svg=frame(h), sx=function(i){ return n>1?L+(R-L)*i/(n-1):(L+R)/2; }, sy=function(v){ return bot-(v-mn)/(mx-mn)*(bot-top); };
@@ -4620,7 +4633,7 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
       var g=el("g",{class:"viz-pt",style:"--vd:"+(300+i*110)+"ms"},svg);
       el("circle",{cx:p[0],cy:p[1],r:r.mark?7:5.5,fill:tone(r),stroke:"#fff","stroke-width":2,class:"viz-pop",style:"transform-origin:"+p[0]+"px "+p[1]+"px"},g);
       txt(g,p[0]+(i===0&&n>1?4:i===n-1&&n>1?-4:0),p[1]-13,r.text,{"text-anchor":i===0&&n>1?"start":i===n-1&&n>1?"end":"middle",class:"viz-val viz-fade"});
-      wrap(g,p[0],bot+20,r.label,chars(edge?slot*.9:slot*.95),3,i===0&&n>1?"start":i===n-1&&n>1?"end":"middle");
+      wrap(g,p[0],bot+20+(stag&&i%2?stag:0),r.label,chars(stag?slot*1.6:(edge?slot*.9:slot*.95)),2,"middle");
     });
     return svg;
   }
@@ -4694,7 +4707,7 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
     return svg;
   }
   function vinterval(rows){
-    var n=rows.length, h=n<3?210:290, top=30, bot=h-70, L=70, R=W-28;
+    var n=rows.length, stag=n>=5?34:0, h=(n<3?210:290)+stag, top=30, bot=h-70-stag, L=70, R=W-28;
     var los=rows.map(function(r){return isFinite(r.lo)?r.lo:r.v;}), his=rows.map(function(r){return isFinite(r.hi)?r.hi:r.v;});
     var mn=Math.min(0,Math.min.apply(null,los)), mx=Math.max(0,Math.max.apply(null,his)); if(mx<=mn) mx=mn+1;
     var pad=(mx-mn)*.1; mn-=pad; mx+=pad;
@@ -4709,7 +4722,7 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
       el("line",{x1:x-7,x2:x+7,y1:y2,y2:y2,stroke:tone(r),"stroke-width":2,class:"viz-fade"},g);
       el("circle",{cx:x,cy:y,r:6.5,fill:tone(r),stroke:"#fff","stroke-width":2,class:"viz-pop",style:"transform-origin:"+x+"px "+y+"px"},g);
       txt(g,x+11,y+4,r.text,{class:"viz-val viz-fade"});
-      wrap(g,x,bot+20,r.label,chars(slot-6),3);
+      wrap(g,x,bot+20+(stag&&i%2?stag:0),r.label,chars(stag?slot*1.7:slot-6),stag?2:3);
     });
     return svg;
   }
@@ -4787,7 +4800,7 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
     var t=doc.getElementById(id);
     if(t && !t.closest("dialog")) return; /* native scroll */
     e.preventDefault();
-    var did=map[id], d=did&&doc.getElementById(did);
+    var did=map[id], d=(did&&doc.getElementById(did))||(t&&t.closest("dialog"));
     if(d){ d.showModal();
       var inner=doc.getElementById(id);
       if(inner) setTimeout(function(){ inner.scrollIntoView({block:"center"});
