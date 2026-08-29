@@ -61,10 +61,10 @@ a:hover{color:var(--navy)}
 /* nav: one sticky mono pill bar */
 #toc{position:sticky;top:0;z-index:70;background:rgba(247,244,238,.92);
   backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);border-bottom:1px solid var(--rule)}
-#toc .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-block:9px}
+#toc .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-block:9px;max-width:none}
 #toc .wrap::-webkit-scrollbar{display:none}
 #toc a{font-family:var(--f-m);font-size:12.5px;letter-spacing:.02em;color:var(--ink-3);
-  text-decoration:none;padding:7px 13px;border-radius:999px;white-space:nowrap;
+  text-decoration:none;padding:7px 10px;border-radius:999px;white-space:nowrap;
   transition:color .25s,background .25s}
 #toc a:hover{color:var(--ink)}
 #toc a.on{background:var(--navy);color:var(--on-navy)}
@@ -91,6 +91,22 @@ a:hover{color:var(--navy)}
   -webkit-text-fill-color:transparent;color:transparent;animation:sweep 17s cubic-bezier(.33,1,.68,1) infinite}
 @keyframes sweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 #cover .hero-thesis{max-width:66ch;margin:0 auto 1.1em;color:var(--on-navy-2);font-size:20px;line-height:1.66}
+/* the first screen is the executive summary: labelled at its head, cued at its foot */
+.exec-label{display:flex;align-items:center;gap:18px;max-width:var(--read);margin:0 auto 34px;
+  font-family:var(--f-m);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.exec-label::before,.exec-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(239,217,168,.6))}
+.exec-label::after{background:linear-gradient(90deg,rgba(239,217,168,.6),transparent)}
+.cue{display:flex;flex-direction:column;align-items:center;gap:10px;width:fit-content;margin:56px auto 0;
+  font-family:var(--f-m);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--on-navy-2);
+  text-decoration:none;transition:color .3s}
+.cue:hover{color:var(--gold)}
+.cue-line{display:block;width:1px;height:46px;background:linear-gradient(var(--gold),transparent);
+  transform-origin:top;animation:cue-drop 1.9s var(--ease) infinite}
+@keyframes cue-drop{0%{transform:scaleY(0);opacity:0}35%{opacity:1}100%{transform:scaleY(1);opacity:0}}
+.cue-chev{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+  animation:cue-bob 1.9s ease-in-out infinite}
+@keyframes cue-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media (prefers-reduced-motion:reduce){.cue-line,.cue-chev{animation:none}}
 #cover .hero-thesis a{color:var(--gold)}
 /* tiles: three measured claims */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;margin:56px 0 8px}
@@ -113,24 +129,65 @@ a:hover{color:var(--navy)}
 .tile .tile-buys,.tile .buys{margin-top:auto;padding-top:14px;border-top:1px solid var(--rule);
   font-size:13.5px;line-height:1.5;color:var(--ink-3)}
 .tile a{font-weight:600}
-/* podcast */
-.pod{max-width:var(--read);margin:44px auto 0;position:relative;z-index:3}
-.pod summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;
-  border:1.5px solid var(--rule-navy);border-radius:999px;padding:14px 24px;color:var(--on-navy);
-  font-family:var(--f-m);font-size:14px;transition:border-color .3s,background .3s}
+/* podcast: the cover box, big enough not to miss, with a breathing gold glow */
+.pod{max-width:var(--read);margin:48px auto 0;position:relative;z-index:3}
+.pod summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;
+  border:1.5px solid rgba(239,217,168,.45);border-radius:999px;padding:15px 26px 15px 17px;color:var(--on-navy);
+  background:linear-gradient(90deg,rgba(239,217,168,.13),rgba(31,79,216,.12) 55%,rgba(239,217,168,.07));
+  box-shadow:0 0 0 0 rgba(239,217,168,.38),0 0 28px rgba(239,217,168,.16),0 18px 44px rgba(3,8,28,.45);
+  animation:pod-glow 2.8s ease-in-out infinite;
+  transition:border-color .3s,background .3s,transform .35s var(--ease)}
+@keyframes pod-glow{0%,100%{box-shadow:0 0 0 0 rgba(239,217,168,.38),0 0 26px rgba(239,217,168,.16),0 18px 44px rgba(3,8,28,.45)}
+  50%{box-shadow:0 0 0 10px rgba(239,217,168,0),0 0 54px rgba(239,217,168,.34),0 18px 44px rgba(3,8,28,.45)}}
 .pod summary::-webkit-details-marker{display:none}
-.pod summary:hover{border-color:rgba(242,239,231,.55);background:rgba(242,239,231,.06)}
-.pod .pod-right{margin-left:auto;display:inline-flex;align-items:center;gap:14px}
-.pod .pod-len{font-size:12px;color:var(--on-navy-2);letter-spacing:.03em}
-.pod .eq{display:inline-flex;align-items:center;gap:2.5px;height:14px}
+.pod summary:hover{border-color:rgba(239,217,168,.85);transform:translateY(-2px);
+  background:linear-gradient(90deg,rgba(239,217,168,.2),rgba(31,79,216,.16) 55%,rgba(239,217,168,.1))}
+.pod.playing summary{animation:none;border-color:rgba(239,217,168,.8);
+  box-shadow:0 0 0 3px rgba(239,217,168,.22),0 0 44px rgba(239,217,168,.3),0 18px 44px rgba(3,8,28,.45)}
+.pod-play{flex:none;width:54px;height:54px;border-radius:50%;background:var(--gold);color:var(--navy);
+  display:grid;place-items:center;box-shadow:0 0 0 6px rgba(239,217,168,.16),0 0 26px rgba(239,217,168,.5);
+  transition:transform .35s var(--ease),box-shadow .3s}
+.pod summary:hover .pod-play{transform:scale(1.07);box-shadow:0 0 0 8px rgba(239,217,168,.22),0 0 34px rgba(239,217,168,.65)}
+.pod-play svg{width:28px;height:28px;fill:currentColor;display:block}
+.pod-play .bars{display:none}
+.pod.playing .pod-play .tri{display:none}
+.pod.playing .pod-play .bars{display:block}
+.pod-t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pod-t b{font-family:var(--f-d);font-weight:560;font-size:clamp(18px,1.9vw,22px);line-height:1.2;letter-spacing:-.005em;color:#fff}
+.pod-sub{font-family:var(--f-m);font-size:12.5px;color:var(--on-navy-2);letter-spacing:.02em}
+.pod .pod-right{margin-left:auto;display:inline-flex;align-items:center;gap:14px;flex:none}
+.pod-cta{font-family:var(--f-m);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);
+  background:var(--gold);border-radius:999px;padding:8px 16px;font-weight:600}
+.pod .eq{display:inline-flex;align-items:center;gap:2.5px;height:16px}
 .pod .eq i{width:3px;height:5px;border-radius:1.5px;background:var(--gold);transition:height .3s}
 .pod.playing .eq i{animation:eq .9s ease-in-out infinite alternate}
 .pod.playing .eq i:nth-child(2){animation-delay:.15s}
 .pod.playing .eq i:nth-child(3){animation-delay:.3s}
 .pod.playing .eq i:nth-child(4){animation-delay:.45s}
-@keyframes eq{from{height:4px}to{height:14px}}
+@keyframes eq{from{height:4px}to{height:16px}}
 .pod > div{padding:16px 6px 0}
 .pod audio{width:100%}
+@media (prefers-reduced-motion:reduce){.pod summary{animation:none}}
+/* the same podcast, as a pill pinned in the top bar so it can be started from any section */
+#toc .wrap{padding-right:calc(clamp(18px,4vw,40px) + 168px)}
+#toc .podpill{position:absolute;right:clamp(18px,4vw,40px);top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--f-m);font-size:12px;letter-spacing:.02em;color:var(--navy);background:var(--gold);
+  border:1px solid rgba(184,134,11,.55);border-radius:999px;padding:3px 12px 3px 4px;cursor:pointer;
+  box-shadow:-22px 0 18px -6px var(--paper),0 0 0 0 rgba(184,134,11,.3);
+  transition:box-shadow .3s,transform .3s var(--ease),background .3s}
+#toc .podpill:hover{transform:translateY(calc(-50% - 1px));box-shadow:-22px 0 18px -6px var(--paper),0 0 18px rgba(184,134,11,.4)}
+#toc .podpill.playing{box-shadow:-22px 0 18px -6px var(--paper),0 0 0 3px rgba(239,217,168,.55),0 0 16px rgba(184,134,11,.35)}
+.podpill-ring{width:26px;height:26px;border-radius:50%;padding:3px;flex:none;
+  background:conic-gradient(var(--navy) var(--p,0%),rgba(6,13,43,.18) 0)}
+.podpill-ring svg{width:20px;height:20px;display:block;border-radius:50%;background:var(--navy);fill:var(--gold)}
+.podpill .bars{display:none}
+.podpill.playing .tri{display:none}
+.podpill.playing .bars{display:block}
+.podpill-t{font-weight:600;letter-spacing:.04em}
+.podpill-len{color:rgba(6,13,43,.72);font-variant-numeric:tabular-nums}
+.podpill.playing .podpill-ring{animation:ring-pulse 1.6s ease-in-out infinite}
+@keyframes ring-pulse{0%,100%{box-shadow:0 0 0 0 rgba(6,13,43,.25)}50%{box-shadow:0 0 0 4px rgba(6,13,43,0)}}
+@media (prefers-reduced-motion:reduce){.pod.playing .eq i{animation:none;height:9px}.podpill.playing .podpill-ring{animation:none}}
 /* verdict + how-to on cover: quiet framed panels */
 .cover-panel{max-width:920px;margin:64px auto 0;border:1px solid var(--rule-navy);border-radius:16px;
   padding:clamp(22px,3.5vw,40px)}
@@ -247,7 +304,7 @@ tr.ol-m-row :is(td,th):last-child{border-right:2px solid var(--amber-b);border-r
 .ol-scene-track{position:relative;height:12px;border-radius:6px;background:var(--paper-deep);
   box-shadow:inset 0 -1px 0 var(--rule)}
 .ol-scene-track::after{content:"";position:absolute;inset:0;border-radius:6px;background:var(--blue);
-  transform:scaleX(var(--w,0));transform-origin:left;transition:transform .5s var(--ease)}
+  clip-path:inset(0 calc((1 - var(--w,0))*100%) 0 0 round 6px);transition:clip-path .5s var(--ease)}
 .ol-scene-row.is-alt .ol-scene-track::after{background:var(--warm)}
 .ol-v{font-family:var(--f-d);font-weight:560;font-size:22px;color:var(--navy);justify-self:end;text-align:right}
 .ol-scene-row.hl .ol-v{color:var(--amber-b)}
@@ -299,6 +356,9 @@ sup{font-size:.62em}
   border:1.5px solid var(--navy);border-radius:999px;background:none;color:var(--navy);
   padding:11px 22px;cursor:pointer;transition:all .25s}
 .dd:hover,button.ol-dd-btn:hover{background:var(--navy);color:var(--on-navy)}
+#cover .dd{border-color:rgba(239,217,168,.75);color:var(--gold);background:rgba(239,217,168,.08);
+  font-size:14px;padding:13px 26px;margin:2.6em auto 0}
+#cover .dd:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 button.ol-dd-btn{border:1.5px solid var(--navy);border-radius:999px;background:none;color:var(--navy);padding:11px 22px;cursor:pointer;transition:all .25s}
 /* interludes */
 .interlude{background:var(--paper-deep);margin-top:clamp(70px,10vh,120px);padding-bottom:clamp(40px,6vh,70px)}
@@ -328,10 +388,10 @@ dialog.dd-modal::backdrop{background:rgba(6,13,43,.55);backdrop-filter:blur(3px)
 .dd-body .card-grid{grid-template-columns:1fr}
 .dd-body .card{max-width:100%}
 .dd-body :is(figure,.exhibit,.chart-figure,.table-scroll,.ol-scene){max-width:100%;overflow-x:auto}
-/* adjacent bound figures need a breath between them (the 0.9040.638 run-together) */
-.dd-body span[data-src]+span[data-src],
-.dd-body span[data-derived]+span[data-src],
-main span[data-src]+span[data-src]{margin-left:.35em}
+/* adjacent bound figures need a breath between them (the 0.9040.638 run-together); the class is
+   set by the runtime only when no text sits between the two spans, so "0.1576 to 0.5629" stays tight */
+.num-gap{margin-left:.35em}
+.dd-body h3[id^="ddt-"]{scroll-margin-top:96px}
 .dd-foot{display:flex;gap:18px;align-items:center;border-top:1px solid var(--rule);padding:14px 30px;
   font-family:var(--f-m);font-size:12.5px}
 
@@ -474,27 +534,54 @@ svg.arch-fired .ar{opacity:1;transform:none}
 /* 112: the disposition flow gets room */
 svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2em auto}
 
-/* the atlas: dots sweep in as a wave, then the field breathes */
-#atlas-exhibit svg,.atlas-svg{
-  -webkit-mask-image:linear-gradient(100deg,#000 60%,transparent 75%);
-  mask-image:linear-gradient(100deg,#000 60%,transparent 75%);
-  -webkit-mask-size:300% 100%;mask-size:300% 100%;
-  -webkit-mask-position:100% 0;mask-position:100% 0;opacity:0}
-svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ease-in-out 2.2s infinite alternate;
-  transform-origin:50% 50%}
+/* the atlas: dots pop in by distance under a light sweep. Each category lives on its own overlay
+   layer, so a whole cluster drifts, lights up or dims as one composited surface instead of
+   repainting three thousand circles; a thin clone layer twinkles; a spotlight walks the legend
+   cluster by cluster, and hovering a chip pins it. */
+#atlas-exhibit figure{position:relative}
+.atlas-field{position:relative;opacity:0;
+  -webkit-mask-image:linear-gradient(100deg,#000 60%,transparent 75%);mask-image:linear-gradient(100deg,#000 60%,transparent 75%);
+  -webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-position:100% 0;mask-position:100% 0}
+.atlas-field.atlas-in{animation:atlas-sweep 1.3s var(--ease) forwards;transform-origin:50% 50%}
+.atlas-field.settled{opacity:1;-webkit-mask-image:none;mask-image:none;
+  animation:atlas-breathe 7s ease-in-out infinite alternate}
 @keyframes atlas-sweep{from{-webkit-mask-position:100% 0;mask-position:100% 0;opacity:.15}
   to{-webkit-mask-position:0% 0;mask-position:0% 0;opacity:1}}
-@keyframes atlas-breathe{from{transform:scale(1)}to{transform:scale(1.014)}}
-#atlas-exhibit svg circle.ad{transform-box:fill-box;transform-origin:center;
-  transition:opacity .55s var(--ease) var(--ad,0ms),transform .55s var(--ease) var(--ad,0ms)}
-#atlas-exhibit svg.atlas-hold circle.ad{opacity:0;transform:scale(.25)}
-#atlas-exhibit svg circle.tw{animation:dot-tw 3.2s ease-in-out infinite alternate;animation-delay:var(--ad,0ms)}
-@keyframes dot-tw{from{transform:scale(1)}to{transform:scale(1.4)}}
+@keyframes atlas-breathe{from{transform:scale(1)}to{transform:scale(1.018)}}
+.atlas-field > svg.chart-svg{display:block}
+.atlas-field svg.ac,.atlas-field svg.twl{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.atlas-field svg.ac{transition:opacity .45s var(--ease);will-change:transform;
+  animation:atlas-drift var(--dd,12s) ease-in-out var(--dp,0s) infinite alternate}
+@keyframes atlas-drift{from{transform:translate(0,0)}to{transform:translate(var(--dx,3px),var(--dy,-2px))}}
+.atlas-field.spot svg.ac:not(.lit){opacity:.22}
+.atlas-field circle.ad{transform-box:fill-box;transform-origin:center;
+  transition:opacity .45s var(--ease) var(--ad,0ms),transform .45s var(--ease) var(--ad,0ms)}
+.atlas-field.atlas-hold circle.ad{opacity:0;transform:scale(.2)}
+.atlas-field.settled circle.ad{transition-delay:0ms,0ms}
+.atlas-field svg.ac.lit circle{transform:scale(1.35);fill-opacity:.88}
+.atlas-field svg.twl circle{transform-box:fill-box;transform-origin:center;transition:opacity .45s var(--ease);
+  animation:dot-tw var(--tw,3.2s) ease-in-out var(--ad,0ms) infinite alternate}
+@keyframes dot-tw{from{transform:scale(1);opacity:.3}to{transform:scale(1.9);opacity:.95}}
+.atlas-cap{position:absolute;left:14px;top:12px;margin:0;z-index:2;pointer-events:none;
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--f-m);font-size:11.5px;color:var(--ink);
+  background:rgba(255,253,249,.9);border:1px solid var(--rule);border-radius:999px;padding:5px 12px 5px 8px;
+  opacity:0;transform:translateY(-4px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.atlas-cap.show{opacity:1;transform:none}
+.atlas-cap b{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.atlas-cap .n{color:var(--ink-3)}
+#atlas-exhibit p.legend-row{display:flex;flex-wrap:wrap;gap:6px 6px;align-items:center;margin:14px 0 0;
+  font-family:var(--f-m);font-size:11.5px;line-height:1.3;color:var(--ink-2)}
+#atlas-exhibit p.legend-row > span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  padding:4px 10px 4px 7px;border-radius:999px;border:1px solid transparent;cursor:pointer;
+  transition:background .25s,border-color .25s,color .25s,transform .25s var(--ease)}
+#atlas-exhibit p.legend-row > span:hover,#atlas-exhibit p.legend-row > span.on{background:var(--paper-deep);
+  border-color:var(--rule-strong);color:var(--ink);transform:translateY(-1px)}
+#atlas-exhibit p.legend-row .legend-swatch{margin-top:0}
 @media (prefers-reduced-motion:reduce){
-  #atlas-exhibit svg.atlas-hold circle.ad{opacity:1;transform:none}
-  #atlas-exhibit svg circle.tw{animation:none}}
-@media (prefers-reduced-motion:reduce){#atlas-exhibit svg,.atlas-svg{opacity:1;-webkit-mask-image:none;mask-image:none}
-  svg.atlas-in{animation:none}}
+  .atlas-field{opacity:1;-webkit-mask-image:none;mask-image:none}
+  .atlas-field.atlas-in,.atlas-field.settled,.atlas-field svg.ac{animation:none}
+  .atlas-field.atlas-hold circle.ad{opacity:1;transform:none}
+  .atlas-field svg.twl{display:none}}
 
 /* reveals */
 .anim .rv{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
@@ -502,17 +589,50 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
 @media (prefers-reduced-motion:reduce){.anim .rv{opacity:1;transform:none;transition:none}
   #cover h1{animation:none}}
 /* reveal density: scene bars grow only once seen; chapter pieces cascade */
-.anim .rv:not(.in) .ol-scene-track::after{transform:scaleX(0)}
+.anim .rv:not(.in) .ol-scene-track::after{clip-path:inset(0 100% 0 0 round 6px)}
 .anim .rv:not(.in) :is(.ol-scene-int,.ol-scene-pt){opacity:0}
 :is(.ol-scene-int,.ol-scene-pt){transition:opacity .5s var(--ease) .15s}
-.anim .chapter .wrap > *{opacity:0;transform:translateY(14px);
-  transition:opacity .6s var(--ease),transform .6s var(--ease)}
+/* chapter bands: a quick, fine-grained cascade. Every piece lands on its own beat (--cd),
+   the label's four chips first, then the head, the sentence, the figure box and its number,
+   the implication wipes in from its gold rule, and the loss list files in row by row. */
+.chapter .wrap::before{content:"";position:absolute;left:clamp(18px,4vw,40px);right:clamp(18px,4vw,40px);top:-28px;height:1px;
+  background:linear-gradient(90deg,var(--gold),rgba(239,217,168,.35) 45%,transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease) .05s}
+.chapter.in .wrap::before{transform:scaleX(1)}
+.anim .chapter .wrap > *{opacity:0;transform:translateY(12px);
+  transition:opacity .34s var(--ease) var(--cd,.3s),transform .34s var(--ease) var(--cd,.3s)}
 .anim .chapter.in .wrap > *{opacity:1;transform:none}
-.anim .chapter.in .wrap > :nth-child(2){transition-delay:.08s}
-.anim .chapter.in .wrap > :nth-child(3){transition-delay:.16s}
-.anim .chapter.in .wrap > :nth-child(4){transition-delay:.24s}
-.anim .chapter.in .wrap > :nth-child(n+5){transition-delay:.3s}
-@media (prefers-reduced-motion:reduce){.anim .chapter .wrap > *{opacity:1;transform:none;transition:none}}
+.anim .chapter :is(.ol-story-chapter > span,.ol-story-fig > span,.ol-story-loss > :not(ul),.ol-story-loss li){
+  opacity:0;transform:translateY(10px);
+  transition:opacity .32s var(--ease) var(--cd,0ms),transform .32s var(--ease) var(--cd,0ms)}
+.anim .chapter.in :is(.ol-story-chapter > span,.ol-story-fig > span,.ol-story-loss > :not(ul),.ol-story-loss li){opacity:1;transform:none}
+.anim .chapter .wrap > :is(.ol-story-chapter,.ol-story-loss){opacity:1;transform:none;transition:none}
+.anim .chapter .ol-story-chapter > span:nth-child(1){--cd:0ms}
+.anim .chapter .ol-story-chapter > span:nth-child(2){--cd:45ms}
+.anim .chapter .ol-story-chapter > span:nth-child(3){--cd:90ms}
+.anim .chapter .ol-story-chapter > span:nth-child(4){--cd:135ms}
+.anim .chapter .ol-story-head{--cd:110ms}
+.anim .chapter .ol-story-sent{--cd:190ms}
+.anim .chapter .ol-story-fig{--cd:250ms}
+.anim .chapter .ol-story-fig > span:nth-child(1){--cd:310ms;transform:translateY(10px) scale(.94);transform-origin:left bottom}
+.anim .chapter .ol-story-fig > span:nth-child(2){--cd:370ms}
+.anim .chapter .ol-story-fig > span:nth-child(3){--cd:420ms}
+.anim .chapter .ol-story-imp{--cd:440ms;transform:none;clip-path:inset(0 100% 0 0);
+  transition:opacity .3s var(--ease) var(--cd),clip-path .55s var(--ease) var(--cd)}
+.anim .chapter.in .ol-story-imp{clip-path:inset(0 0 0 0)}
+.anim .chapter .ol-story-loss > .ol-story-losslabel{--cd:520ms}
+.anim .chapter .ol-story-loss li:nth-child(1){--cd:560ms}
+.anim .chapter .ol-story-loss li:nth-child(2){--cd:600ms}
+.anim .chapter .ol-story-loss li:nth-child(3){--cd:640ms}
+.anim .chapter .ol-story-loss li:nth-child(4){--cd:680ms}
+.anim .chapter .ol-story-loss li:nth-child(5){--cd:720ms}
+.anim .chapter .ol-story-loss li:nth-child(6){--cd:760ms}
+.anim .chapter .ol-story-loss li:nth-child(n+7){--cd:800ms}
+.anim .chapter .ol-story-loss > button{--cd:840ms}
+@media (prefers-reduced-motion:reduce){
+  .anim .chapter :is(.wrap > *,.ol-story-chapter > span,.ol-story-fig > span,.ol-story-loss > :not(ul),.ol-story-loss li,.ol-story-imp){
+    opacity:1;transform:none;clip-path:none;transition:none}
+  .chapter .wrap::before{transform:none;transition:none}}
 
 /* close */
 #close{background:var(--navy);color:var(--on-navy-2);margin-top:clamp(70px,10vh,120px);padding:64px 0 80px;font-size:15.5px}
@@ -539,11 +659,19 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
   dialog.dd-modal{max-width:100vw;max-height:100dvh;border-radius:0}
   .dd-body{padding:20px 18px}
   #cover .wave{opacity:.35}
-  .pod summary{padding:12px 16px;font-size:12.5px}
+  .pod summary{padding:11px 14px 11px 11px;gap:12px}
+  .pod-play{width:44px;height:44px}
+  .pod-play svg{width:22px;height:22px}
+  .pod-t b{font-size:16px}
+  .pod-sub{font-size:11px}
+  .pod-cta{display:none}
+  .podpill-len{display:none}
+  #toc .wrap{padding-right:calc(16px + 118px)}
+  .exec-label{letter-spacing:.14em;font-size:11.5px}
 }
 
 @media print{.only-print{display:block}
-  #field,#grain,#rail,#toc,.pod,.dd,.wave,.ol-glow{display:none !important}
+  #field,#grain,#rail,#toc,.pod,.dd,.wave,.ol-glow,.cue,.atlas-cap{display:none !important}
   .chapter::after{display:none}
   body{background:#fff}.chapter,.interlude .head,#cover,#close{background:#fff;color:#000}}
 </style>
@@ -553,7 +681,7 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
 <div id="grain" aria-hidden="true"></div>
 <div id="rail" aria-hidden="true"><i></i></div>
 <div id="shell">
-<nav id="toc" aria-label="Sections"><div class="wrap"><a href="#cover">01 Topic</a><a href="#s2">02 Problem and value</a><a href="#s3">03 Why Amex</a><a href="#s4">04 Architecture</a><a href="#s5">05 Backbone</a><a href="#s6">06 Offers</a><a href="#s7">07 Signing and corridors</a><a href="#s8">08 Implementation plan</a><a class="src" href="#" data-dd="dd-sources">Sources</a></div></nav>
+<nav id="toc" aria-label="Sections"><div class="wrap"><a href="#cover">01 Topic</a><a href="#s2">02 Problem and value</a><a href="#s3">03 Why Amex</a><a href="#s4">04 Architecture</a><a href="#s5">05 Backbone</a><a href="#s6">06 Offers</a><a href="#s7">07 Signing and corridors</a><a href="#s8">08 Implementation plan</a><a class="src" href="#" data-dd="dd-sources">Sources</a></div><button type="button" id="podpill" class="podpill" aria-pressed="false" aria-label="Play the podcast"><span class="podpill-ring" aria-hidden="true"><svg viewBox="0 0 32 32"><path class="tri" d="M12.6 9.6v12.8L23 16 12.6 9.6z"/><g class="bars"><rect x="11.2" y="10" width="3.4" height="12" rx="1.5"/><rect x="17.6" y="10" width="3.4" height="12" rx="1.5"/></g></svg></span><span class="podpill-t">Podcast</span><span class="podpill-len">22 min</span></button></nav>
 <header id="cover"><span id="s1" aria-hidden="true"></span>
   <video class="wave" autoplay muted loop playsinline preload="metadata"
     src="assets/cover-wave.mp4" aria-hidden="true"></video>
@@ -567,6 +695,7 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
       <span data-src="results/reading_path.json#/proposal_block_2_last">90</span>; pages <span data-src="results/reading_path.json#/evidence_first">23</span> to
       <span data-src="results/reading_path.json#/evidence_last">83</span> are evidence you may skip</span></p>
     <h1><span class="hl"><span>One loop. One model. Three questions:</span></span> <span class="hl"><span>who to sign, what to offer, where growth comes next.</span></span></h1>
+    <p class="exec-label" id="exec-summary"><span>Executive summary</span></p>
     <div class="col"><p class="hero-thesis">One Loop is one transaction backbone
       serving three growth heads, one for each question above, entered under Amex's Growth theme, with a
       measurement layer that puts a <button type="button" class="ol-term" data-term="randomized-holdout" aria-haspopup="dialog">randomized holdout</button> behind every partner campaign so the lift can be
@@ -587,8 +716,11 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
       rollout, across <span data-assumption="assumption">eight</span> partner markets, counting only
       discount revenue on <button type="button" class="ol-term" data-term="incremental-effect" aria-haspopup="dialog">incremental billed business</button>, the base case of the three scenarios Section 2 prints. <a href="#s2">Section 2</a>
       builds it bottom-up and then shows what is left of it when the lanes that lost are struck out.</p></div>
-    <details class="pod" id="podbox"><summary><b>Listen to this project as a podcast</b>
-      <span class="pod-right"><span class="pod-len">22 min</span>
+    <details class="pod" id="podbox"><summary>
+      <span class="pod-play" aria-hidden="true"><svg viewBox="0 0 32 32"><path class="tri" d="M12.2 9.2v13.6L23.4 16 12.2 9.2z"/><g class="bars"><rect x="10.6" y="9.6" width="3.6" height="12.8" rx="1.6"/><rect x="17.8" y="9.6" width="3.6" height="12.8" rx="1.6"/></g></svg></span>
+      <span class="pod-t"><b>Listen to this project as a podcast</b>
+        <span class="pod-sub">Two voices walk the whole entry, evidence included · <span class="pod-len">22 min</span></span></span>
+      <span class="pod-right"><span class="pod-cta">Play</span>
       <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span></summary>
       <div><audio id="podcast" controls preload="none" src="One_Loop_Podcast.m4a"
         aria-label="A recorded conversation about One Loop, about twenty minutes"></audio></div>
@@ -740,9 +872,9 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
       <p class="verdict-close">The unflattering results are printed on purpose: a decision product is worth
         what its numbers are worth, including where that is nothing.</p>
     </div>
-    <div class="bandrows rv"><nav data-old class="required-band" aria-label="Round 1 required sections">
+    <div class="bandrows rv"><nav data-old class="required-band" aria-label="Required sections">
   <div class="wrap">
-    <span class="label">Round 1 required sections</span>
+    <span class="label">Required sections</span>
     <a href="#s1"><b>Topic</b> one backbone, three growth heads, a measurement layer that certifies
       the lift (Section 1)</a>
     <a href="#s2"><b>Problem Statement</b> APAC coverage is the named growth constraint (Section 2)</a>
@@ -769,6 +901,7 @@ svg.atlas-in{animation:atlas-sweep 1.8s var(--ease) forwards,atlas-breathe 8s ea
   </div>
 </nav></div>
     <button class="dd rv" data-dd="dd-hero">Read the full account of this chapter</button>
+    <a class="cue" href="#s2"><span class="cue-line" aria-hidden="true"></span>Scroll down for the full report<svg class="cue-chev" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 5l4.5 4.5L11.5 5"/></svg></a>
   </div>
 </header>
 <main>
@@ -3745,6 +3878,14 @@ var doc=document, root=doc.documentElement;
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 requestAnimationFrame(function(){ root.classList.add("anim"); });
 
+/* two bound figures with nothing between them get a breath; any text between them already is one */
+[].slice.call(doc.querySelectorAll("span[data-src]")).forEach(function(sp){
+  var n=sp.previousSibling;
+  while(n && n.nodeType===3 && !/\S/.test(n.nodeValue)) n=n.previousSibling;
+  if(n && n.nodeType===1 && n.tagName==="SPAN" && (n.hasAttribute("data-src")||n.hasAttribute("data-derived")))
+    sp.classList.add("num-gap");
+});
+
 /* every chapter band gets a living particle layer over its still */
 (function(){
   if(reduce) return;
@@ -3856,7 +3997,7 @@ prog();
     var pre=m[1], num=m[2], post=m[3];
     var dec=(num.split(".")[1]||"").length, hasComma=num.indexOf(",")>=0;
     var target=parseFloat(num.replace(/,/g,"")); if(!isFinite(target)) return;
-    var t0=null, DUR=1100;
+    var t0=null, DUR=en.target.classList.contains("ol-story-num")?650:1100;
     function fmt(v){ var s=v.toFixed(dec);
       if(hasComma){ var pp=s.split("."); pp[0]=pp[0].replace(/\B(?=(\d{3})+(?!\d))/g,","); s=pp.join("."); }
       return s; }
@@ -3872,7 +4013,7 @@ prog();
 (function(){
   var io=new IntersectionObserver(function(es){ es.forEach(function(en){
     if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
-  });},{rootMargin:"0px 0px -18% 0px"});
+  });},{rootMargin:"0px 0px -10% 0px"});
   [].slice.call(doc.querySelectorAll(".chapter,.interlude .head")).forEach(function(c){io.observe(c);});
 })();
 
@@ -4207,41 +4348,95 @@ prog();
   });
 })();
 
-/* the atlas dots sweep in and the field breathes, re-armed on every visit */
+/* the atlas: the base svg keeps its title and its layout height; every dot moves onto an overlay
+   svg for its category (one composited layer each), a sparse clone layer twinkles, and a spotlight
+   walks the legend one cluster at a time; hovering or focusing a chip pins that cluster */
 (function(){
-  if(reduce) return;
-  var a=doc.querySelector("#atlas-exhibit svg");
-  if(!a) return;
-  /* per-dot staggered pop from the field's center, plus a sparse twinkle layer */
-  var dots=[].slice.call(a.querySelectorAll("circle")).filter(function(c){
+  var ex=doc.getElementById("atlas-exhibit"), base=ex&&ex.querySelector("svg");
+  if(!base) return;
+  var NS="http://www.w3.org/2000/svg";
+  var dots=[].slice.call(base.querySelectorAll("circle")).filter(function(c){
     return !/hover-target|ol-hit/.test(c.getAttribute("class")||""); });
-  if(dots.length){
-    var vb=(a.getAttribute("viewBox")||"0 0 640 400").split(/\s+/).map(Number);
-    var cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2, maxd=Math.hypot(vb[2]/2,vb[3]/2)||1;
-    dots.forEach(function(c,i){
-      var dx=(+c.getAttribute("cx")||cx)-cx, dy=(+c.getAttribute("cy")||cy)-cy;
-      var d=Math.hypot(dx,dy)/maxd;
-      c.classList.add("ad");
-      c.style.setProperty("--ad", Math.round(d*1100+((i*37)%140))+"ms");
-      if(i%37===0){ c.classList.add("tw"); }
-    });
-    a.classList.add("atlas-hold");
+  if(!dots.length) return;
+  function norm(c){ c=String(c||"").trim().toLowerCase(); var m;
+    if((m=c.match(/^#([0-9a-f]{6})$/))) return [parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)].join(",");
+    if((m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/))) return [m[1],m[2],m[3]].join(",");
+    return c; }
+  var vbAttr=base.getAttribute("viewBox")||"0 0 640 400";
+  var field=doc.createElement("div"); field.className="atlas-field";
+  base.parentNode.insertBefore(field,base); field.appendChild(base);
+  function layer(cls){ var g=doc.createElementNS(NS,"svg"); g.setAttribute("viewBox",vbAttr);
+    g.setAttribute("class",cls); g.setAttribute("aria-hidden","true"); return g; }
+  var vb=vbAttr.split(/\s+/).map(Number);
+  var cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2, maxd=Math.hypot(vb[2]/2,vb[3]/2)||1;
+  var groups={}, order=[], twl=layer("twl"), tws=[];
+  dots.forEach(function(c,i){
+    var k=norm(c.getAttribute("fill"));
+    if(!groups[k]){ groups[k]=layer("ac"); groups[k].setAttribute("data-fill",k); order.push(k); }
+    if(!reduce && i%16===0){ var t=c.cloneNode(false); t._gi=order.indexOf(k);
+      t.style.setProperty("--tw",(2.2+((i*13)%9)/4).toFixed(2)+"s"); t.style.setProperty("--ad",((i*53)%1700)+"ms");
+      twl.appendChild(t); tws.push(t); }
+    var dx=(+c.getAttribute("cx")||cx)-cx, dy=(+c.getAttribute("cy")||cy)-cy, d=Math.hypot(dx,dy)/maxd;
+    c.classList.add("ad"); c.style.setProperty("--ad", Math.round(d*700+((i*37)%120))+"ms");
+    groups[k].appendChild(c);
+  });
+  order.forEach(function(k,gi){ var g=groups[k];
+    g.style.setProperty("--dd",(9+((gi*7)%7))+"s");
+    g.style.setProperty("--dp","-"+((gi*3.7)%11).toFixed(1)+"s");
+    g.style.setProperty("--dx",(((gi*5)%7)-3)+"px");
+    g.style.setProperty("--dy",(((gi*3)%5)-2)+"px");
+    field.appendChild(g); });
+  field.appendChild(twl);
+  /* legend chips, keyed by swatch color */
+  var legend=ex.querySelector("p.legend-row"), items=legend?[].slice.call(legend.children):[], byFill={};
+  items.forEach(function(it){ var sw=it.querySelector(".legend-swatch");
+    var k=norm(sw?(sw.getAttribute("style")||"").replace(/^.*background:\s*/,""):""); byFill[k]=it;
+    it.setAttribute("tabindex","0"); it.setAttribute("role","button"); });
+  var cats=order.map(function(k){ return {fill:k,g:groups[k],n:groups[k].childElementCount,item:byFill[k]||null}; });
+  var cap=doc.createElement("p"); cap.className="atlas-cap"; cap.setAttribute("aria-hidden","true");
+  var capSw=doc.createElement("b"), capT=doc.createTextNode(""), capN=doc.createElement("span"); capN.className="n";
+  cap.appendChild(capSw); cap.appendChild(capT); cap.appendChild(capN);
+  field.parentElement.insertBefore(cap,field);
+  var idx=-1, timer=null, resume=null, pinned=null, on=false;
+  function light(i){
+    cats.forEach(function(c,j){ c.g.classList.toggle("lit",j===i); if(c.item) c.item.classList.toggle("on",j===i); });
+    tws.forEach(function(t){ t.style.opacity=(i<0||t._gi===i)?"":".18"; });
+    field.classList.toggle("spot",i>=0);
+    if(i>=0){ var c=cats[i]; capSw.style.background="rgb("+c.fill+")";
+      capT.nodeValue=(c.item?c.item.textContent.trim():"")+" ";
+      capN.textContent="· "+c.n+" of "+dots.length+" sample points"; cap.classList.add("show"); }
+    else cap.classList.remove("show");
   }
+  function tick(){ if(pinned!==null) return; idx=(idx+1)%cats.length; light(idx); }
+  function start(){ if(timer||reduce||!on) return; tick(); timer=setInterval(tick,2300); }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+  cats.forEach(function(c,i){ if(!c.item) return;
+    function pin(){ pinned=i; stop(); clearTimeout(resume); light(i); }
+    function unpin(){ pinned=null; clearTimeout(resume); resume=setTimeout(function(){ if(on&&!reduce) start(); else light(-1); },900); }
+    c.item.addEventListener("mouseenter",pin); c.item.addEventListener("focus",pin);
+    c.item.addEventListener("mouseleave",unpin); c.item.addEventListener("blur",unpin);
+    c.item.addEventListener("click",function(){ if(pinned===i&&c.item._tap){ c.item._tap=false; unpin(); } else { c.item._tap=true; pin(); } });
+  });
+  if(reduce){ return; }
+  field.classList.add("atlas-hold");
+  var settle=null;
   var io=new IntersectionObserver(function(es){ es.forEach(function(en){
-    if(en.isIntersecting && !a._on){ a._on=true;
-      a.classList.remove("atlas-in"); a.classList.add("atlas-hold");
-      void a.getBoundingClientRect();
-      requestAnimationFrame(function(){ a.classList.add("atlas-in"); a.classList.remove("atlas-hold"); }); }
-    else if(!en.isIntersecting && a._on){ a._on=false;
-      a.classList.remove("atlas-in"); a.classList.add("atlas-hold"); }
+    if(en.isIntersecting && !field._on){ field._on=true; on=true;
+      field.classList.remove("atlas-in","settled"); field.classList.add("atlas-hold");
+      void field.getBoundingClientRect();
+      requestAnimationFrame(function(){ field.classList.add("atlas-in"); field.classList.remove("atlas-hold"); });
+      clearTimeout(settle); settle=setTimeout(function(){ field.classList.add("settled"); start(); },1400); }
+    else if(!en.isIntersecting && field._on){ field._on=false; on=false; clearTimeout(settle); stop();
+      if(pinned===null) light(-1); field.classList.remove("atlas-in","settled"); field.classList.add("atlas-hold"); }
   });},{rootMargin:"0px 0px -12% 0px",threshold:[0,.08]});
-  io.observe(a);
+  io.observe(field);
 })();
 
 /* link resolver: targets that live inside dialogs open them */
 (function(){
   var mapEl=doc.getElementById("idmap"), map={};
   try{ map=JSON.parse(mapEl.textContent||"{}"); }catch(e){}
+  window.olIdMap=map;
   doc.addEventListener("click",function(e){
     var a=e.target.closest('a[href^="#"]'); if(!a) return;
     var id=a.getAttribute("href").slice(1); if(!id) return;
@@ -4257,6 +4452,22 @@ prog();
   }, true);
 })();
 
+/* deep dives: each button names a heading inside its chapter's full-account dialog (ddt-<slug>);
+   open that dialog and land on the heading */
+doc.addEventListener("click",function(e){
+  var dd=e.target.closest("button.ol-dd-btn"); if(!dd) return;
+  var label=(dd.textContent||"").replace(/^\s*Deep dive:\s*/i,"");
+  var slug="ddt-"+label.toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+  var target=doc.getElementById(slug), map=window.olIdMap||{};
+  var did=map[slug], d=(did&&doc.getElementById(did))||(target&&target.closest("dialog"));
+  if(!d){ return; }
+  e.stopImmediatePropagation();
+  d._opener=dd; d.showModal();
+  var c=d.querySelector(".dd-close"); if(c) c.focus({preventScroll:true});
+  if(target) setTimeout(function(){ target.scrollIntoView({block:"start",behavior:"smooth"});
+    target.classList.add("hit"); setTimeout(function(){ target.classList.remove("hit"); },2200); },160);
+}, true);
+
 /* loss list expand */
 doc.addEventListener("click",function(e){
   var b=e.target.closest(".ol-story-loss button,.loss-more"); if(b){
@@ -4269,13 +4480,33 @@ doc.addEventListener("click",function(e){
   m.setAttribute("aria-expanded", host.classList.contains("open")?"true":"false");
 });
 
-/* podcast */
+/* podcast: the cover box and the pill pinned in the top bar drive one audio element */
 (function(){
-  var box=doc.getElementById("podbox"), a=doc.getElementById("podcast");
+  var box=doc.getElementById("podbox"), a=doc.getElementById("podcast"), pill=doc.getElementById("podpill");
   if(!box||!a) return;
-  box.addEventListener("toggle",function(){ if(box.open){var p=a.play(); if(p&&p.catch)p.catch(function(){});} else a.pause(); });
-  a.addEventListener("playing",function(){box.classList.add("playing");});
-  a.addEventListener("pause",function(){box.classList.remove("playing");});
+  var cta=box.querySelector(".pod-cta"), plen=pill&&pill.querySelector(".podpill-len"),
+      ring=pill&&pill.querySelector(".podpill-ring"), IDLE="22 min";
+  function play(){ var p=a.play(); if(p&&p.catch)p.catch(function(){}); }
+  function setState(on){
+    box.classList.toggle("playing",on);
+    if(cta) cta.textContent=on?"Pause":"Play";
+    if(pill){ pill.classList.toggle("playing",on); pill.setAttribute("aria-pressed",on?"true":"false");
+      pill.setAttribute("aria-label",(on?"Pause":"Play")+" the podcast"); }
+  }
+  function mmss(sec){ sec=Math.max(0,Math.round(sec)); var m=Math.floor(sec/60), r=sec%60; return m+":"+(r<10?"0":"")+r; }
+  box.addEventListener("toggle",function(){ if(box.open) play(); else a.pause(); });
+  a.addEventListener("playing",function(){ setState(true); });
+  a.addEventListener("pause",function(){ setState(false); });
+  a.addEventListener("ended",function(){ setState(false); if(plen) plen.textContent=IDLE; if(ring) ring.style.setProperty("--p","0%"); });
+  a.addEventListener("timeupdate",function(){
+    if(!isFinite(a.duration)||!a.duration) return;
+    if(ring) ring.style.setProperty("--p",((a.currentTime/a.duration)*100).toFixed(1)+"%");
+    if(plen) plen.textContent=a.paused&&a.currentTime===0?IDLE:"−"+mmss(a.duration-a.currentTime);
+  });
+  if(pill) pill.addEventListener("click",function(){
+    if(a.paused){ if(!box.open){ box.open=true; } else { play(); } }
+    else a.pause();
+  });
 })();
 
 /* loop mark on the cover */
