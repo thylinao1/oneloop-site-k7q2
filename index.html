@@ -130,6 +130,41 @@ a:hover{color:var(--navy)}
 .tile .tile-buys,.tile .buys{margin-top:auto;padding-top:14px;border-top:1px solid var(--rule);
   font-size:13.5px;line-height:1.5;color:var(--ink-3)}
 .tile a{font-weight:600}
+/* the film: a poster frame above the podcast box; the player loads only on the first click */
+.film{max-width:var(--read);margin:60px auto 0;position:relative;z-index:3}
+.film-frame{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;
+  border:1.5px solid rgba(239,217,168,.45);background:var(--navy-2);cursor:pointer;
+  box-shadow:0 0 0 0 rgba(239,217,168,.38),0 0 28px rgba(239,217,168,.16),0 30px 60px rgba(3,8,28,.55);
+  animation:pod-glow 2.8s ease-in-out infinite;transition:transform .35s var(--ease)}
+.film-frame:hover{transform:translateY(-2px)}
+.film-frame:focus-visible{outline:2px solid var(--amber-b);outline-offset:4px}
+.film-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+  filter:brightness(.92);transition:transform 6s var(--ease),filter .4s}
+.film-frame:hover .film-poster{transform:scale(1.03);filter:brightness(1)}
+.film-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,13,43,.05) 40%,rgba(6,13,43,.78) 100%)}
+.film-play{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;
+  background:var(--gold);color:var(--navy);display:grid;place-items:center;
+  box-shadow:0 0 0 10px rgba(239,217,168,.16),0 0 40px rgba(239,217,168,.55);transition:transform .35s var(--ease),box-shadow .3s}
+.film-frame:hover .film-play{transform:scale(1.08);box-shadow:0 0 0 14px rgba(239,217,168,.22),0 0 52px rgba(239,217,168,.7)}
+.film-play svg{width:38px;height:38px;fill:currentColor;margin-left:5px}
+.film-cap{position:absolute;left:0;right:0;bottom:0;padding:22px 28px;display:flex;align-items:flex-end;gap:18px}
+.film-cap .t{flex:1;min-width:0}
+.film-cap b{display:block;font-family:var(--f-d);font-weight:560;font-size:clamp(18px,2vw,23px);line-height:1.2;color:#fff;letter-spacing:-.005em}
+.film-cap .film-sub{display:block;margin-top:5px;font-family:var(--f-m);font-size:12.5px;color:var(--on-navy-2);letter-spacing:.02em}
+.film-cap .film-cta{flex:none;font-family:var(--f-m);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);
+  background:var(--gold);border-radius:999px;padding:8px 16px;font-weight:600}
+.film-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.film.playing .film-frame{animation:none;cursor:default;transform:none}
+.film.playing :is(.film-poster,.film-veil,.film-play,.film-cap){display:none}
+.film-alt{margin:12px 4px 0;font-family:var(--f-m);font-size:12px;color:var(--on-navy-3);text-align:center}
+.film-alt a{color:var(--on-navy-2)}
+@media (prefers-reduced-motion:reduce){.film-frame{animation:none}.film-frame:hover .film-poster{transform:none}}
+@media (max-width:640px){.film-play{width:60px;height:60px;margin:-30px 0 0 -30px}.film-play svg{width:26px;height:26px}
+  .film-frame{aspect-ratio:auto;display:block}
+  .film-frame .film-poster{position:relative;display:block;aspect-ratio:16/9;height:auto}
+  .film-veil{bottom:auto;height:0}
+  .film-play{top:calc(50% - 44px)}
+  .film-cap{position:static;padding:14px 16px 16px;background:rgba(6,13,43,.6)}.film-cap .film-cta{display:none}}
 /* podcast: the cover box, big enough not to miss, with a breathing gold glow */
 .pod{max-width:var(--read);margin:60px auto 0;position:relative;z-index:3}
 .pod summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;
@@ -777,7 +812,7 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
 }
 
 @media print{.only-print{display:block}
-  #field,#grain,#rail,#toc,.pod,.dd,.wave,.ol-glow,.cue,.atlas-cap{display:none !important}
+  #field,#grain,#rail,#toc,.pod,.film,.dd,.wave,.ol-glow,.cue,.atlas-cap{display:none !important}
   .chapter::after{display:none}
   body{background:#fff}.chapter,.interlude .head,#cover,#close{background:#fff;color:#000}}
 </style>
@@ -822,6 +857,17 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
       rollout, across <span data-assumption="assumption">eight</span> partner markets, counting only
       discount revenue on <button type="button" class="ol-term" data-term="incremental-effect" aria-haspopup="dialog">incremental billed business</button>, the base case of the three scenarios Section 2 prints. <a href="#s2">Section 2</a>
       builds it bottom-up and then shows what is left of it when the lanes that lost are struck out.</p></div>
+    <div class="film" id="filmbox">
+      <div class="film-frame" role="button" tabindex="0" aria-label="Play the film: One Loop in ten minutes" data-yt="g0ptMP5NRPo">
+        <img class="film-poster" src="assets/film-poster.webp" alt="" width="1440" height="709" loading="eager" fetchpriority="high">
+        <div class="film-veil" aria-hidden="true"></div>
+        <div class="film-play" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 6.2v19.6L26 16 9 6.2z"/></svg></div>
+        <div class="film-cap"><span class="t"><b>Watch the film: One Loop in ten minutes</b>
+          <span class="film-sub">The system, the evidence and the losses, animated · 10 min 31 s</span></span>
+          <span class="film-cta">Play</span></div>
+      </div>
+      <p class="film-alt">Opens the YouTube player in place. Also at <a href="https://youtu.be/g0ptMP5NRPo">youtu.be/g0ptMP5NRPo</a>.</p>
+    </div>
     <details class="pod" id="podbox"><summary>
       <span class="pod-play" aria-hidden="true"><svg viewBox="0 0 32 32"><path class="tri" d="M12.2 9.2v13.6L23.4 16 12.2 9.2z"/><g class="bars"><rect x="10.6" y="9.6" width="3.6" height="12.8" rx="1.6"/><rect x="17.8" y="9.6" width="3.6" height="12.8" rx="1.6"/></g></svg></span>
       <span class="pod-t"><b>Listen to this project as a podcast</b>
@@ -4863,6 +4909,22 @@ doc.addEventListener("click",function(e){
   host.classList.toggle("open");
   m.setAttribute("aria-expanded", host.classList.contains("open")?"true":"false");
 });
+
+/* the film: the poster is a button; the first activation swaps in the YouTube player */
+(function(){
+  var box=doc.getElementById("filmbox"), fr=box&&box.querySelector(".film-frame"); if(!fr) return;
+  function start(){
+    if(box.classList.contains("playing")) return;
+    var id=fr.getAttribute("data-yt"), f=doc.createElement("iframe");
+    f.src="https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+    f.setAttribute("allow","autoplay; encrypted-media; picture-in-picture; fullscreen");
+    f.setAttribute("allowfullscreen",""); f.setAttribute("title","One Loop, the film");
+    fr.appendChild(f); box.classList.add("playing"); fr.removeAttribute("role"); fr.removeAttribute("tabindex");
+    var a=doc.getElementById("podcast"); if(a&&!a.paused) a.pause();
+  }
+  fr.addEventListener("click",start);
+  fr.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); start(); } });
+})();
 
 /* podcast: the cover box and the pill pinned in the top bar drive one audio element */
 (function(){
