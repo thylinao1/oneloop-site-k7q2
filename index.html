@@ -192,7 +192,15 @@ a:hover{color:var(--navy)}
 .cover-panel{max-width:920px;margin:64px auto 0;border:1px solid var(--rule-navy);border-radius:16px;
   padding:clamp(22px,3.5vw,40px)}
 .cover-panel .verdict-list{list-style:none;margin:0;padding:0;display:grid;gap:26px 44px;grid-template-columns:1fr 1fr}
-@media(max-width:900px){.cover-panel .verdict-list{grid-template-columns:1fr}}
+/* the scorecard: the third item sits straight under the first; the long second item owns the
+   right column. The reading stops: the third, the audit, runs the full width. */
+.cover-panel .verdict-list--score li:nth-child(1){grid-column:1;grid-row:1}
+.cover-panel .verdict-list--score li:nth-child(2){grid-column:2;grid-row:1 / span 2}
+.cover-panel .verdict-list--score li:nth-child(3){grid-column:1;grid-row:2}
+.cover-panel .verdict-list--stops li:nth-child(3){grid-column:1 / -1}
+@media(max-width:960px){.cover-panel .verdict-list{grid-template-columns:1fr}
+  .cover-panel .verdict-list--score li:nth-child(n){grid-column:auto;grid-row:auto}
+  .cover-panel .verdict-list--stops li:nth-child(3){grid-column:auto}}
 .cover-panel .verdict-list li{font-size:16.5px;line-height:1.6;color:var(--on-navy-2)}
 .cover-panel .verdict-lede{display:block;font-family:var(--f-d);font-weight:560;font-size:clamp(23px,2.2vw,28px);
   line-height:1.2;letter-spacing:-.01em;color:var(--gold);margin:0 0 20px}
@@ -270,6 +278,13 @@ main > .chapter:first-child{margin-top:0}
 .part li::marker{color:var(--amber-b)}
 /* stat lede rows (extracted .value-headline & kin) */
 .part .lede,.part .buys{color:var(--ink-2);font-size:17px}
+.value-headline{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 22px;margin:2.2em auto;
+  padding:22px 28px;background:var(--card);border:1px solid var(--rule);border-radius:14px;
+  border-left:3px solid var(--amber-b)}
+.value-headline > span:first-child{font-family:var(--f-d);font-weight:560;font-size:clamp(34px,3.6vw,46px);
+  line-height:1;color:var(--navy);letter-spacing:-.01em}
+.value-headline .value-sub{font-family:var(--f-m);font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+  line-height:1.6;color:var(--ink-3);max-width:44ch}
 /* breakout payloads */
 .part .wrap > :is(figure,.exhibit,.chart-figure,.table-scroll,.card-grid,.ol-scene,.lift-report,.replay,.replay-zone,#replay-console){
   max-width:none}
@@ -383,7 +398,8 @@ button.ol-dd-btn{border:1.5px solid var(--navy);border-radius:999px;background:n
 /* dialogs */
 dialog.dd-modal{border:0;border-radius:18px;padding:0;max-width:min(1020px,94vw);width:100%;
   max-height:86vh;background:var(--card);color:var(--ink);box-shadow:0 40px 90px rgba(3,8,28,.5)}
-dialog.dd-modal::backdrop{background:rgba(6,13,43,.55);backdrop-filter:blur(3px)}
+dialog.dd-modal::backdrop{background:rgba(6,13,43,.84);backdrop-filter:blur(4px)}
+.dd-head:focus,.dd-head:focus-visible{outline:none}
 .dlg-open #toc,.dlg-open #rail{opacity:0;pointer-events:none}
 #toc{transition:opacity .2s}
 .dd-head{position:sticky;top:0;z-index:6;background:var(--navy);color:var(--on-navy);padding:20px 56px 18px 28px}
@@ -804,7 +820,7 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
       </div></div>
     <div class="cover-panel rv">
       <p class="verdict-lede">Self-assessment of the evidence</p>
-      <ul class="verdict-list">
+      <ul class="verdict-list verdict-list--score">
         
         <li><strong>The question, and the answer</strong> Not whether the model beats the cheap control,
           but whether adding it to that control improves it. On protection, on synthetic TabFormer, adding
@@ -862,7 +878,7 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
         US$<span data-src="results/cost_model.json#/one_off_rnd_cost/usd_total_market_equivalent">28</span> of compute at cited
         public rates, cash US$<span data-src="results/cost_model.json#/one_off_rnd_cost/usd_cash_actually_paid">0</span>, and
         stop three below is how to check any number on this page yourself.</p>
-      <ul class="verdict-list">
+      <ul class="verdict-list verdict-list--stops">
         <li><strong>Stop one, the proposal</strong> The idea, the value and the architecture are Sections 1
           to 4. The business actions, the plan and the plain list of what we have not shown are Section 8. Sections 5 to 7
           are the evidence behind them, kept because it can be checked, and none of it is required reading:
@@ -4066,13 +4082,13 @@ prog();
   doc.addEventListener("click",function(e){
     var b=e.target.closest("[data-dd]");
     if(b){ var d=doc.getElementById(b.getAttribute("data-dd"));
-      if(d){ d._opener=b; d.showModal(); var c=d.querySelector(".dd-close"); if(c)c.focus({preventScroll:true}); } return; }
+      if(d){ d._opener=b; d.showModal(); } return; }
     var t=e.target.closest("button.ol-term");
     if(t){ var key=(t.getAttribute("data-term")||t.textContent||"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
       var ALIAS={"qini":"qini-coefficient","paired-interval":"confidence-interval"};
       key=ALIAS[key]||key;
       var g=doc.getElementById("g-"+key)||doc.getElementById("g-"+(t.getAttribute("data-term")||""));
-      if(g){ g.showModal(); var gc=g.querySelector(".dd-close"); if(gc)gc.focus({preventScroll:true}); } return; }
+      if(g){ g.showModal(); } return; }
     var x=e.target.closest(".dd-close");
     if(x){ var dd=x.closest("dialog"); if(dd) dd.close(); return; }
   });
@@ -4086,7 +4102,9 @@ prog();
 (function(){
   var ds=[].slice.call(doc.querySelectorAll("dialog"));
   function sync(){ root.classList.toggle("dlg-open", ds.some(function(d){ return d.open; })); }
-  ds.forEach(function(d){ var o=d.showModal.bind(d); d.showModal=function(){ o(); sync(); }; d.addEventListener("close",sync); });
+  ds.forEach(function(d){ var o=d.showModal.bind(d);
+    d.showModal=function(){ o(); sync(); var h=d.querySelector(".dd-head"); if(h){ h.tabIndex=-1; h.focus({preventScroll:true}); } };
+    d.addEventListener("close",sync); });
 })();
 
 /* focus returns to the opener when any dialog closes */
@@ -4492,7 +4510,6 @@ doc.addEventListener("click",function(e){
   if(!d){ return; }
   e.stopImmediatePropagation();
   d._opener=dd; d.showModal();
-  var c=d.querySelector(".dd-close"); if(c) c.focus({preventScroll:true});
   if(target) setTimeout(function(){ target.scrollIntoView({block:"start",behavior:"smooth"});
     target.classList.add("hit"); setTimeout(function(){ target.classList.remove("hit"); },2200); },160);
 }, true);
