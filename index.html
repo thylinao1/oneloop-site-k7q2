@@ -4550,6 +4550,9 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
   function fmt(v){ if(!isFinite(v)) return ""; var a=Math.abs(v); return a>=100?v.toFixed(0):a>=10?v.toFixed(1):a>=1?v.toFixed(2):v.toFixed(3).replace(/0+$/,"").replace(/\.$/,""); }
   function tone(r){ return r.wrong?C.rust:r.clear?C.green:r.straddle?C.grey:r.mark?C.gold:r.alt?C.warm:C.blue; }
   /* a label broken on spaces into at most `lines` lines of about `chars` characters */
+  /* keep a centered label's estimated box inside the frame */
+  function clampx(x,text,charLimit){ var half=Math.min(String(text||"").length,charLimit)*3.5;
+    return Math.min(Math.max(x,10+half),W-10-half); }
   function wrap(parent,x,y,text,chars,lines,anchor,cls){
     var words=String(text||"").trim().split(/\s+/), out=[], cur="";
     words.forEach(function(w){ if((cur+" "+w).trim().length>chars && cur){ out.push(cur); cur=w; } else cur=(cur+" "+w).trim(); });
@@ -4633,7 +4636,8 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
       var g=el("g",{class:"viz-pt",style:"--vd:"+(300+i*110)+"ms"},svg);
       el("circle",{cx:p[0],cy:p[1],r:r.mark?7:5.5,fill:tone(r),stroke:"#fff","stroke-width":2,class:"viz-pop",style:"transform-origin:"+p[0]+"px "+p[1]+"px"},g);
       txt(g,p[0]+(i===0&&n>1?4:i===n-1&&n>1?-4:0),p[1]-13,r.text,{"text-anchor":i===0&&n>1?"start":i===n-1&&n>1?"end":"middle",class:"viz-val viz-fade"});
-      wrap(g,p[0],bot+20+(stag&&i%2?stag:0),r.label,chars(stag?slot*1.6:(edge?slot*.9:slot*.95)),2,"middle");
+      var lc=chars(stag?slot*1.6:(edge?slot*.9:slot*.95));
+      wrap(g,clampx(p[0],r.label,lc),bot+20+(stag&&i%2?stag:0),r.label,lc,2,"middle");
     });
     return svg;
   }
@@ -4722,7 +4726,8 @@ window.OL_VIZ={"s2-scenarios": "lollipop", "s2-phase1": "columns", "s2-subtracti
       el("line",{x1:x-7,x2:x+7,y1:y2,y2:y2,stroke:tone(r),"stroke-width":2,class:"viz-fade"},g);
       el("circle",{cx:x,cy:y,r:6.5,fill:tone(r),stroke:"#fff","stroke-width":2,class:"viz-pop",style:"transform-origin:"+x+"px "+y+"px"},g);
       txt(g,x+11,y+4,r.text,{class:"viz-val viz-fade"});
-      wrap(g,x,bot+20+(stag&&i%2?stag:0),r.label,chars(stag?slot*1.7:slot-6),stag?2:3);
+      var vc=chars(stag?slot*1.7:slot-6);
+      wrap(g,clampx(x,r.label,vc),bot+20+(stag&&i%2?stag:0),r.label,vc,stag?2:3);
     });
     return svg;
   }
