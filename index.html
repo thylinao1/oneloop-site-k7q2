@@ -483,7 +483,7 @@ svg rect:not([fill]):not([class]){fill:var(--card)}
 .hit{outline:2px solid var(--amber-b);outline-offset:4px;border-radius:4px}
 
 /* the wave: the old cover's particle field, back as the cover's ground */
-#cover .wave{position:absolute;left:-4%;top:5vh;width:112%;height:77vh;object-fit:cover;object-position:right top;
+#cover .wave{position:absolute;left:auto;right:0;top:5vh;width:112%;height:77vh;object-fit:cover;object-position:right top;
   opacity:.62;pointer-events:none;filter:brightness(.82) saturate(1.1);
   /* anchored to the screen's right: strong top-right, fading toward bottom-left */
   mask-image:linear-gradient(250deg,#000 34%,rgba(0,0,0,.5) 62%,transparent 90%),
