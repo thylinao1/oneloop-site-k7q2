@@ -90,7 +90,7 @@ a:hover{color:var(--navy)}
   background-size:280% 100%;-webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;animation:sweep 17s cubic-bezier(.33,1,.68,1) infinite}
 @keyframes sweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-#cover .hero-thesis{max-width:66ch;margin:0 auto 1.7em;color:var(--on-navy-2);font-size:20px;line-height:1.72}
+#cover .hero-thesis{max-width:940px;margin:0 auto 1.6em;color:var(--on-navy-2);font-size:21px;line-height:1.74}
 /* the first screen is the executive summary: labelled at its head, cued at its foot */
 .exec-label{display:flex;align-items:center;gap:18px;max-width:var(--read);margin:0 auto 48px;
   font-family:var(--f-m);font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
@@ -197,6 +197,9 @@ a:hover{color:var(--navy)}
 .cover-panel .verdict-lede{display:block;font-family:var(--f-d);font-weight:560;font-size:clamp(23px,2.2vw,28px);
   line-height:1.2;letter-spacing:-.01em;color:var(--gold);margin:0 0 20px}
 .cover-panel .verdict-lede a{color:#fff}
+.cover-panel .verdict-foot{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--rule-navy);
+  font-family:var(--f-m);font-size:12.5px;letter-spacing:.02em;line-height:1.6;color:var(--on-navy-3)}
+.cover-panel .verdict-foot a{color:var(--gold)}
 .cover-panel .verdict-list strong{display:block;font-family:var(--f-d);font-weight:560;font-size:20px;line-height:1.25;
   color:var(--gold);margin-bottom:8px}
 .cover-panel .verdict-list a{color:var(--gold)}
@@ -800,8 +803,7 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
         <a class="tile-jump" href="#narratives-card">Step through the replay console, Section 6</a>
       </div></div>
     <div class="cover-panel rv">
-      <p class="verdict-lede">So we scored ourselves first. The full version is in
-        <a href="#honest-scoreboard">Section 5</a>.</p>
+      <p class="verdict-lede">Self-assessment of the evidence</p>
       <ul class="verdict-list">
         
         <li><strong>The question, and the answer</strong> Not whether the model beats the cheap control,
@@ -813,7 +815,7 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
           baseline still has room and not at the full corpus we ship, and on <button type="button" class="ol-term" data-term="transfer" aria-haspopup="dialog">next-category transfer</button>. On real
           corpora it added on the store head and on the corridor forecast; each of those gains that carries
           an interval clears zero, and the corridor gain is a point comparison that says so.</li>
-        <li><strong>What lost, and is printed anyway</strong> Alone, the model still loses to the counting
+        <li><strong>What did not hold, reported in full</strong> Alone, the model still loses to the counting
           control on protection, and on corridors it is worse than the <button type="button" class="ol-term" data-term="seasonal-naive" aria-haspopup="dialog">seasonal naive</button> it is added to, so the
           line above is the blend winning and not the model winning. That blend win is scale-free too: totalled in
           arrivals the naive is ahead, and Section 7 prints both. On the real corpus the embeddings
@@ -825,7 +827,7 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
           itself, the merchant-axis runs and the pair-retention task built to test it, is a null so far, so
           the closed-loop advantage is argued, not measured. And our own red team still beats our
           generated-text gate on two of seven attack classes, found by us, fixed, and replayed.</li>
-        <li><strong>What the protocol is worth</strong> One frozen model read under four evaluation
+        <li><strong>What the evaluation protocol contributes</strong> One frozen model read under four evaluation
           protocols, guards turned on one step at a time. The permissive number is far larger than the one
           we ship, and the guards, not the model, explain the gap. Section 5 draws every interval behind
           these lines against one zero line.</li>
@@ -833,6 +835,8 @@ svg[aria-label^="Disposition"]{display:block;max-width:none;width:100%;margin:2e
       <!-- the closing line "Three answers sit on one backbone. What follows is how much of each one survived."
            was cut on 2026-08-24 to pay for the disclosure clauses added to tile three and to WHAT LOST. It
            carried no evidence: the three tiles above and the section that follows already say it. -->
+      <p class="verdict-foot">The full scoreboard, every interval drawn against one zero line, is in
+        <a href="#honest-scoreboard">Section 5</a>.</p>
     </div>
     <div class="cover-panel rv">
       <p class="verdict-lede">If you read nothing else</p>
