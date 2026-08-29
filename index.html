@@ -90,10 +90,10 @@ a:hover{color:var(--navy)}
   background-size:280% 100%;-webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;animation:sweep 17s cubic-bezier(.33,1,.68,1) infinite}
 @keyframes sweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-#cover .hero-thesis{max-width:66ch;margin:0 auto 1.1em;color:var(--on-navy-2);font-size:20px;line-height:1.66}
+#cover .hero-thesis{max-width:66ch;margin:0 auto 1.7em;color:var(--on-navy-2);font-size:20px;line-height:1.72}
 /* the first screen is the executive summary: labelled at its head, cued at its foot */
-.exec-label{display:flex;align-items:center;gap:18px;max-width:var(--read);margin:0 auto 34px;
-  font-family:var(--f-m);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.exec-label{display:flex;align-items:center;gap:18px;max-width:var(--read);margin:0 auto 48px;
+  font-family:var(--f-m);font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
 .exec-label::before,.exec-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(239,217,168,.6))}
 .exec-label::after{background:linear-gradient(90deg,rgba(239,217,168,.6),transparent)}
 .cue{display:flex;flex-direction:column;align-items:center;gap:10px;width:fit-content;margin:56px auto 0;
@@ -122,7 +122,7 @@ a:hover{color:var(--navy)}
 .tile .tile-note,.tile p{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
 .tile .tile-caveat{margin-top:auto;padding-top:14px;border-top:1px solid var(--rule);
   font-size:13px;line-height:1.5;color:var(--ink-3)}
-.tile .tile-caveat-tag{display:block;font-family:var(--f-m);font-size:10.5px;letter-spacing:.07em;
+.tile .tile-caveat-tag{display:block;font-family:var(--f-m);font-size:12px;letter-spacing:.07em;
   text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
 .tile .tile-jump{display:inline-block;margin-top:12px;font-weight:600}
 .tile .ol-bars{display:none}
@@ -130,7 +130,7 @@ a:hover{color:var(--navy)}
   font-size:13.5px;line-height:1.5;color:var(--ink-3)}
 .tile a{font-weight:600}
 /* podcast: the cover box, big enough not to miss, with a breathing gold glow */
-.pod{max-width:var(--read);margin:48px auto 0;position:relative;z-index:3}
+.pod{max-width:var(--read);margin:60px auto 0;position:relative;z-index:3}
 .pod summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;
   border:1.5px solid rgba(239,217,168,.45);border-radius:999px;padding:15px 26px 15px 17px;color:var(--on-navy);
   background:linear-gradient(90deg,rgba(239,217,168,.13),rgba(31,79,216,.12) 55%,rgba(239,217,168,.07));
@@ -194,9 +194,11 @@ a:hover{color:var(--navy)}
 .cover-panel .verdict-list{list-style:none;margin:0;padding:0;display:grid;gap:26px 44px;grid-template-columns:1fr 1fr}
 @media(max-width:900px){.cover-panel .verdict-list{grid-template-columns:1fr}}
 .cover-panel .verdict-list li{font-size:16.5px;line-height:1.6;color:var(--on-navy-2)}
-.cover-panel .verdict-list strong,.cover-panel .verdict-lede{display:block;font-family:var(--f-m);
-  font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--on-navy-3);
-  font-weight:600;margin-bottom:8px}
+.cover-panel .verdict-lede{display:block;font-family:var(--f-d);font-weight:560;font-size:clamp(23px,2.2vw,28px);
+  line-height:1.2;letter-spacing:-.01em;color:var(--gold);margin:0 0 20px}
+.cover-panel .verdict-lede a{color:#fff}
+.cover-panel .verdict-list strong{display:block;font-family:var(--f-d);font-weight:560;font-size:20px;line-height:1.25;
+  color:var(--gold);margin-bottom:8px}
 .cover-panel .verdict-list a{color:var(--gold)}
 /* the three bands become three quiet rows */
 .bandrows{max-width:920px;margin:22px auto 0;display:grid;gap:14px}
@@ -206,8 +208,8 @@ a:hover{color:var(--navy)}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bandrows :is(li,a) b,.bandrows :is(li,a) strong{font-family:var(--f-d);font-weight:560;font-size:18px;color:var(--on-navy);margin-right:8px}
 .bandrows a:hover b{color:var(--gold)}
-.bandrows .label{font-family:var(--f-m);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--on-navy-3);margin:0 0 10px;display:block}
+.bandrows .label{font-family:var(--f-d);font-weight:560;font-size:20px;line-height:1.25;letter-spacing:-.005em;
+  color:var(--gold);margin:0 0 14px;display:block}
 
 /* ---------- chapter bands ---------- */
 .chapter{position:relative;background:var(--navy);color:var(--on-navy);margin-top:clamp(70px,10vh,120px);
@@ -273,6 +275,13 @@ figcaption{font-size:14px;color:var(--ink-3);line-height:1.55;max-width:none;mar
 .exhibit,.chart-figure,.lift-report{background:var(--card);border:1px solid var(--rule);border-radius:18px;
   padding:clamp(18px,3vw,32px);box-shadow:0 1px 0 rgba(19,28,56,.03)}
 .exhibit-provenance{font-family:var(--f-m);font-size:11.5px;line-height:1.6;color:var(--ink-3);max-width:none}
+/* the partner lift report: labelled figures in a grid, the segment across the top */
+.lift-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0 22px}
+.lift-report-grid > div{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:14px 16px 13px;min-width:0}
+.lift-report-grid > div:first-child{grid-column:1 / -1;background:var(--amber-bg);border-color:rgba(184,134,11,.3)}
+.lift-report-grid dt{font-family:var(--f-m);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin:0 0 7px}
+.lift-report-grid dd{margin:0;font-family:var(--f-d);font-weight:560;font-size:22px;line-height:1.15;color:var(--navy);overflow-wrap:anywhere}
+.lift-report-grid > div:first-child dd{font-size:20px;color:var(--ink)}
 /* tables, rebuilt clean */
 .table-scroll{overflow-x:auto;background:var(--card);border:1px solid var(--rule);border-radius:18px;
   padding:6px clamp(12px,2vw,24px) 14px}
@@ -372,6 +381,8 @@ button.ol-dd-btn{border:1.5px solid var(--navy);border-radius:999px;background:n
 dialog.dd-modal{border:0;border-radius:18px;padding:0;max-width:min(1020px,94vw);width:100%;
   max-height:86vh;background:var(--card);color:var(--ink);box-shadow:0 40px 90px rgba(3,8,28,.5)}
 dialog.dd-modal::backdrop{background:rgba(6,13,43,.55);backdrop-filter:blur(3px)}
+.dlg-open #toc,.dlg-open #rail{opacity:0;pointer-events:none}
+#toc{transition:opacity .2s}
 .dd-head{position:sticky;top:0;z-index:6;background:var(--navy);color:var(--on-navy);padding:20px 56px 18px 28px}
 .dd-body{position:relative;z-index:1}
 .dd-head .k{font-family:var(--f-m);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--on-navy-3);margin:0 0 6px}
@@ -489,7 +500,7 @@ svg rect:not([fill]):not([class]){fill:var(--card)}
 .replay-stage{max-width:none}
 .replay-panel{background:var(--card);border:1px solid var(--rule);border-radius:16px;
   padding:clamp(18px,3vw,30px);margin:0 0 1.4em}
-.replay-panel[hidden]{display:none}
+.replay-panel[hidden],.replay-panel.is-off{display:none}
 .replay-panel-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:14px}
 .replay-id{font-family:var(--f-d);font-size:19px;color:var(--navy)}
 .badge{font-family:var(--f-m);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;
@@ -498,21 +509,28 @@ svg rect:not([fill]):not([class]){fill:var(--card)}
 .badge--label{color:var(--amber);border-color:rgba(184,134,11,.45);background:var(--amber-bg)}
 .replay-note{background:var(--amber-bg);border:1px solid rgba(184,134,11,.3);border-radius:10px;
   padding:12px 16px;font-size:15px;margin:0 0 16px}
-.replay-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:none;align-items:start}
-@media(max-width:900px){.replay-grid{grid-template-columns:1fr}}
-.replay-zone{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:16px 18px}
+.replay-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;
+  gap:18px;max-width:none;align-items:start}
+.replay-grid > .replay-zone:first-child{grid-row:1 / span 3}
+@media(max-width:900px){.replay-grid{grid-template-columns:1fr;grid-template-rows:none}
+  .replay-grid > .replay-zone:first-child{grid-row:auto}}
+.replay-zone{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;min-width:0}
 .replay-zone h4{margin:0 0 10px;font-family:var(--f-m);font-size:11.5px;letter-spacing:.07em;
   text-transform:uppercase;color:var(--ink-3);font-weight:600}
-.fact-list{list-style:none;margin:0;padding:0;font-size:14.5px;line-height:1.55}
-.fact-list li{display:block;margin:0 0 11px;padding-left:1.1em;text-indent:-1.1em}
-.fact-list li code{margin-right:9px;text-indent:0}
+.fact-list{list-style:none;margin:0;padding:0;font-size:15px;line-height:1.5}
+.fact-list dt,.fact-list dd{margin:0;min-width:0}
+.fact-list dt{margin:0 0 4px}
+.fact-list dt code{display:inline-block;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.45}
+.fact-list dd{overflow-wrap:anywhere;color:var(--ink)}
+.fact-list dd + dt{border-top:1px solid var(--rule);padding-top:10px;margin-top:10px}
 .fact-list code{font-family:var(--f-m);font-size:11px;background:var(--paper-deep);
   border-radius:6px;padding:2px 7px;color:var(--ink-2)}
 .narrative-quote{font-size:15.5px;line-height:1.6;border-left:2px solid var(--rule-strong);
   padding-left:14px;margin:0}
 .narrative-quote .num-ok{background:rgba(14,124,98,.12);border-radius:4px;padding:0 3px}
 .check-list{list-style:none;margin:0;padding:0;font-size:13.5px;line-height:1.55}
-.check-list li{display:block;margin:0 0 9px}
+.check-list li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:0 0 9px}
+.check-list code{white-space:normal;overflow-wrap:anywhere}
 .check-list li code{margin-right:8px}
 .check-list code{font-family:var(--f-m);font-size:10.5px;color:var(--ink-3)}
 .zone-verdict{margin-top:10px;font-family:var(--f-m);font-size:12px}
@@ -4058,6 +4076,13 @@ prog();
     var d=e.target.closest("dialog.dd-modal");
     if(d && e.target===d) d.close();
   });
+})();
+
+/* the sticky bar and the rail step aside while any dialog is open, so nothing shows through the backdrop */
+(function(){
+  var ds=[].slice.call(doc.querySelectorAll("dialog"));
+  function sync(){ root.classList.toggle("dlg-open", ds.some(function(d){ return d.open; })); }
+  ds.forEach(function(d){ var o=d.showModal.bind(d); d.showModal=function(){ o(); sync(); }; d.addEventListener("close",sync); });
 })();
 
 /* focus returns to the opener when any dialog closes */
